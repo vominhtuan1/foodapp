@@ -1,21 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, Dimensions, LogBox } from "react-native";
+import { Container, Text } from "native-base";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
+import FoodScreen from "./screens/FoodScreen";
+import CategoryItem from "./components/category/categoryItem";
 
+import MyTab from "./navigation/Tab";
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  LogBox.ignoreAllLogs();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    console.log("font is loaded");
+    async function loadFont() {
+      await Font.loadAsync({
+        Roboto: require("native-base/Fonts/Roboto.ttf"),
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+        ...Ionicons.font,
+      });
+      setLoading(false);
+    }
+    loadFont();
+  }, [loading]);
+  //check if icon is selected
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (loading) {
+    console.log("font is not load");
+    return (
+      <View>
+        <Text></Text>
+      </View>
+    );
+  } else {
+    return <MyTab />;
+  }
+}
