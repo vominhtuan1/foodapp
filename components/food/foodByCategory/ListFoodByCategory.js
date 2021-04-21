@@ -5,11 +5,11 @@ import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { getFoodByCategory } from "../../../data/fakeApi";
 const ListFoodByCategory = ({ route }) => {
-  renderFood = ({ item }) => {
+  renderFood = ({ item,navigation }) => {
     return (
       <TouchableHighlight
         underlayColor="#fff"
-        onPress={() => console.log("food click")}
+        onPress={() => navigation.navigate("FoodDetail", {item})}
       >
         <View style={styles.container}>
           <Image style={styles.photo} source={item.src} />
@@ -34,6 +34,7 @@ const ListFoodByCategory = ({ route }) => {
         showsVerticalScrollIndicator={false}
         numColumns={2}
         data={getFoodByCategory(route.params.categoryId)}
+        navigation={route.params.navigation}
         renderItem={renderFood}
         keyExtractor={(item) => `${item.id}`}
       />

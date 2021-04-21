@@ -40,7 +40,10 @@ const SingleFood = (props) => {
                     <Text>Tổng tiền</Text>
                     <Text style={{ fontSize: 20, marginTop: 5 }}>20.000 đồng</Text>
                 </View>
-                <TouchableOpacity style={styles.buttonAdd}>
+                <TouchableOpacity 
+                    style={styles.buttonAdd}
+                    //onPress={}    
+                >
                     <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
             </View>

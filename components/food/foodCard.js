@@ -1,16 +1,14 @@
 import React from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    Dimensions,
-    Button,
-    Image,
-    TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, Dimensions, Button, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+
+import { connect } from 'react-redux';
+import * as actions from '../../Redux/Actions/cartActions';
+
 var { width } = Dimensions.get("window");
+
+
 const HandleText = (text) => {
     if (text.length > 72) {
         return `${text.substr(0, 70)}......`;
@@ -24,7 +22,7 @@ const FoodCard = (props) => {
     return (
         <TouchableOpacity
             style={styles.container}
-            onPress={() => {props.navigation.navigate("FoodDetail", {food : food.item})}}
+            onPress={() => { props.navigation.navigate("FoodDetail", { food: food.item }) }}
         >
             <Image source={food.item.src} style={styles.image} resizeMode="contain" />
             <View style={styles.content}>
@@ -32,15 +30,29 @@ const FoodCard = (props) => {
 
                 <View style={styles.price_addImage}>
                     <Text>{food.item.price} đồng</Text>
-                    <Image
-                        source={require("../../assets/add.png")}
-                        style={styles.imageAdd}
-                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            props.addItemToCart(food.item)
+                        }}
+                    >
+                        <Image
+                            source={require("../../assets/add.png")}
+                            style={styles.imageAdd}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         </TouchableOpacity>
     );
 };
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        addItemToCart : (product) => 
+            dispatch(actions.addToCart({quantity: 1 , product}))
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FFF",
@@ -75,4 +87,4 @@ const styles = StyleSheet.create({
         height: 25,
     },
 });
-export default FoodCard;
+export default connect(null, mapDispatchToProps)(FoodCard);
