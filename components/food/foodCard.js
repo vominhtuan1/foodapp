@@ -24,9 +24,11 @@ const FoodCard = (props) => {
             style={styles.container}
             onPress={() => { props.navigation.navigate("FoodDetail", { food: food.item }) }}
         >
-            <Image source={food.item.src} style={styles.image} resizeMode="contain" />
+            <Image source={food.item.src} style={styles.image} />
             <View style={styles.content}>
-                <Text style={styles.name}>{food.item.name}</Text>
+                <Text style={styles.name}>
+                    {food.item.name.length > 15 ? food.item.name.substring(0, 15 - 3) + '...' : food.item.name}
+                </Text>
 
                 <View style={styles.price_addImage}>
                     <Text>{food.item.price} đồng</Text>
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
     },
     content: {},
     name: {
+        marginTop: 10,
         color: "#4f4a4a",
         fontSize: 15,
         fontWeight: "bold",

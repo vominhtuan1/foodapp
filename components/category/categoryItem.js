@@ -16,6 +16,7 @@ const CategoryItem = (props) => {
         props.navigation.navigate("FoodByCategory", {
           category: props.item.name,
           categoryId: props.item.id,
+          navigation: props.navigation
         });
       }}
     >
