@@ -21,7 +21,7 @@ export const Categories = [
   },
   {
     id: "5",
-    name: "Gỏi ",
+    name: "Healthy",
     image: require("../assets/category/goi.png"),
   },
   {
