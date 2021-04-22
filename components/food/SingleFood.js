@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, ScrollView, Image, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Dimensions, ScrollView, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native'
 
 var { width, height } = Dimensions.get('window');
 
 const SingleFood = (props) => {
 
     const [food, setFood] = useState(props.route.params.food);
+    const [quantity, setQuantity] = useState(1);
+    const [totalPrice, setTotalPrice] = useState(food.price);
+
+    function editQuantity(action) {
+        if (action == "+") {
+            let newQty = quantity + 1;
+            setTotalPrice(food.price * newQty);
+            setQuantity(newQty);
+        } else {
+            if (quantity > 1) {
+                let newQty = quantity - 1;
+                setTotalPrice(food.price * newQty)
+                setQuantity(newQty);
+            }
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -20,28 +36,36 @@ const SingleFood = (props) => {
                 <View style={styles.underTitle}>
                     <Text style={[{ flex: 1 }, styles.price]}>{food.price} đồng</Text>
                     <View style={[styles.quantity, { flex: 1 }]}>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableHighlight
+                            underlayColor="#ff6c00"
+                            style={styles.button}
+                            onPress={() => editQuantity("-")}
+                        >
                             <Text style={{ fontSize: 25 }}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 20 }}>2</Text>
-                        <TouchableOpacity style={styles.button}>
+                        </TouchableHighlight>
+                        <Text style={{ fontSize: 20 }}>{quantity}</Text>
+                        <TouchableHighlight
+                            underlayColor="#ff6c00"
+                            style={styles.button}
+                            onPress={() => {editQuantity("+")}}
+                        >
                             <Text style={{ fontSize: 20 }}>+</Text>
-                        </TouchableOpacity>
+                        </TouchableHighlight>
                     </View>
                 </View>
                 <View style={{ marginTop: 10 }}>
                     <Text style={{ fontSize: 20, fontWeight: '500' }}>Mô tả</Text>
-                    <Text style={{ fontSize: 15, color: '#808080' }}>Hủ tiếu xào đúng chuẩn là sợi hủ tiếu trắng đục vì được làm từ bột gạo nguyên chất. Sau khi nấu, hủ tiếu vẫn giữ được độ dai chứ không bở. Cách làm hủ tiếu xào với sự kết hợp với thịt và rau, tuy đơn giản, nhưng hủ tiếu xào lại là món ngon đầy đủ dinh dưỡng cho ngày bận rộn đấy.</Text>
+                    <Text style={{ fontSize: 15, color: '#808080', marginBottom: 100 }}>{food.description}</Text>
 
                 </View>
             </ScrollView>
             <View style={styles.bottomContainer}>
                 <View style={{ alignItems: 'center' }}>
                     <Text>Tổng tiền</Text>
-                    <Text style={{ fontSize: 20, marginTop: 5 }}>20.000 đồng</Text>
+                    <Text style={{ fontSize: 20, marginTop: 5 }}>{totalPrice} đồng</Text>
                 </View>
                 <TouchableOpacity style={styles.buttonAdd}>
-                    <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>Thêm vào giỏ hàng</Text>
+                    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16 }}>Thêm vào giỏ hàng</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -57,7 +81,7 @@ const styles = StyleSheet.create({
     image: {
         width: "100%",
         height: 250,
-        borderRadius: 20
+        borderRadius: 20,
     },
     title: {
         fontSize: 30,
@@ -68,7 +92,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#ececec',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     quantity: {
         flexDirection: 'row',

@@ -24,6 +24,7 @@ export const FoodCard = StyleSheet.create({
     borderColor: "#cccccc",
     borderWidth: 2,
     borderRadius: 15,
+    backgroundColor: 'white'
   },
   photo: {
     width:
@@ -35,7 +36,7 @@ export const FoodCard = StyleSheet.create({
   },
   name: {
     flex: 1,
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
     color: "#444444",
