@@ -1,8 +1,9 @@
 import React from "react";
 import { View, StyleSheet, Dimensions, Button, TouchableOpacity, Image } from "react-native";
 import { container, Text, Left, Right, H1, ListItem, Thumbnail, Body, Container } from 'native-base';
-import {SwipeListView} from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import CartItem from './CartItem';
+import NumberFormat from 'react-number-format';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,7 +16,7 @@ const CartScreen = (props) => {
 
     var total = 0;
     props.cartItems.forEach(cart => {
-        return (total += cart.product.price)
+        return (total += cart.product.price*cart.quantity)
     });
 
     return (
@@ -26,17 +27,17 @@ const CartScreen = (props) => {
                     <SwipeListView
                         data={props.cartItems}
                         renderItem={(data) => (
-                            <CartItem item={data}/>
+                            <CartItem item={data} />
                         )}
                         renderHiddenItem={(data) => (
                             <View style={styles.hiddenContainer}>
-                                <TouchableOpacity 
+                                <TouchableOpacity
                                     style={styles.hiddenButton}
                                     onPress={() => props.removeFromCart(data.item)}
                                 >
-                                    <Icon 
-                                        name="trash" 
-                                        color={'white'} 
+                                    <Icon
+                                        name="trash"
+                                        color={'white'}
                                         size={30}
                                         style={{
                                             borderRadius: 10,
@@ -54,42 +55,39 @@ const CartScreen = (props) => {
                         leftOpenValue={75}
                         stopLeftSwipe={75}
                         rightOpenValue={-75}
+                        style={{ marginBottom: 134 }}
                     />
                     <View style={styles.bottomContainer}>
-                        <View style={{ flex: 1 }}>
-                            <Left>
-                                <Text style={{ fontSize: 18, fontWeight: '200' }}>Tổng tiền</Text>
-                            </Left>
-                            <Right >
-                                <Text style={styles.price}>{total} đồng</Text>
-                            </Right>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 5 }}>
+                            <Text style={{ fontFamily: 'Comfortaa_Bold', fontSize: 18, color: 'white', padding: 3 }}>Tổng tiền : </Text>
+                            <NumberFormat
+                                value={total}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                renderText={value => <Text style={{ fontFamily: 'Comfortaa_Bold', fontSize: 18, color: 'white', padding: 3 }}>{value} đồng</Text>}
+                            />
                         </View>
-                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Right>
-                                <TouchableOpacity style={styles.buttonContainer}>
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: '300',
-                                        color: 'white'
-                                    }}>
-                                        Xác nhận
-                                    </Text>
-                                </TouchableOpacity>
-                            </Right>
-                            <Right>
-                                <TouchableOpacity 
-                                    style={[styles.buttonContainer, { marginRight: 20 }]}
-                                    onPress={() => props.clearCart()}
-                                >
-                                    <Text style={{
-                                        fontSize: 16,
-                                        fontWeight: '300',
-                                        color: 'white'
-                                    }}>
-                                        Xóa
-                                    </Text>
-                                </TouchableOpacity>
-                            </Right>
+                        <View style={{
+                            width: width * 0.8,
+                            borderWidth: 1,
+                            borderColor: '#ececec',
+                            alignSelf: 'center',
+                            marginTop: 20,
+                            marginBottom: 20
+                        }} />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <TouchableOpacity 
+                                style={[styles.buttonContainer]}
+                                onPress={() => props.clearCart()}    
+                            >
+                                <Text style={{ fontSize: 18, fontFamily: 'Comfortaa_Bold', color: 'black' }}>Xóa</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                style={styles.buttonContainer}
+                                onPress={() => props.navigation.navigate("Checkout")}    
+                            >
+                                <Text style={{ fontSize: 18, fontFamily: 'Comfortaa_Bold', color: 'black' }}>Xác nhận</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </Container>
@@ -102,8 +100,8 @@ const CartScreen = (props) => {
                             height: height / 3
                         }}
                     />
-                    <Text>Có vẻ như giỏ hàng của bạn đang trống</Text>
-                    <Text>Hãy thêm món ăn vào giỏ hàng nào !!!</Text>
+                    <Text style={{fontFamily: 'Comfortaa_Regular', padding: 3}}>Có vẻ như giỏ hàng của bạn đang trống</Text>
+                    <Text style={{fontFamily: 'Comfortaa_Regular', padding: 3, marginTop: 5}}>Hãy thêm món ăn vào giỏ hàng nào !!!</Text>
                 </Container>
             )}
         </>
@@ -118,10 +116,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-     return {
-         clearCart: () => dispatch(actions.clearCart()),
-         removeFromCart: (item) => dispatch(actions.removeFromCart(item))
-     }
+    return {
+        clearCart: () => dispatch(actions.clearCart()),
+        removeFromCart: (item) => dispatch(actions.removeFromCart(item))
+    }
 }
 
 const styles = StyleSheet.create({
@@ -129,15 +127,17 @@ const styles = StyleSheet.create({
         height: height,
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     bottomContainer: {
-        flexDirection: 'row',
         position: 'absolute',
         bottom: 0,
         left: 0,
         backgroundColor: 'white',
-        elevation: 20
+        elevation: 20,
+        width: width,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        backgroundColor: '#ff6c00',
     },
     price: {
         fontSize: 18,
@@ -145,16 +145,19 @@ const styles = StyleSheet.create({
         color: "red"
     },
     buttonContainer: {
-        borderRadius: 10,
+        borderRadius: 15,
         justifyContent: "center",
         alignItems: 'center',
-        backgroundColor: '#ff6c00',
-        padding: 10
+        backgroundColor: 'white',
+        padding: 10,
+        marginBottom: 10,
+
     },
     hiddenContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: 24
     },
     hiddenButton: {
         //backgroundColor: '#ff6c00',
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         paddingRight: 25,
         height: 70,
-        width: width/1.2
+        width: width / 1.2
     }
 })
 

@@ -14,6 +14,7 @@ import {
   View,
 } from "native-base";
 import FoodItem from "./foodItem";
+
 const SearchListFood = (prop) => {
   if (prop.data.length) {
     return (
@@ -26,6 +27,9 @@ const SearchListFood = (prop) => {
                 price={item.price}
                 src={item.src}
                 key={item.id}
+                id={item.id}
+                description={item.description}
+                navigation={prop.navigation}
               />
             );
           })}

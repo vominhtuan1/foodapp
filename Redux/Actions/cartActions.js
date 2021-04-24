@@ -1,4 +1,4 @@
-import {ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART} from '../constants';
+import {ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART, UPDATE_QTY} from '../constants';
 
 export const addToCart = (payload) => {
     return {
@@ -17,5 +17,12 @@ export const removeFromCart = (payload) => {
 export const clearCart = () => {
     return {
         type: CLEAR_CART
+    }
+}
+
+export const updateQty = (payload) => {
+    return {
+        type: UPDATE_QTY,
+        payload
     }
 }

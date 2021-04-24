@@ -5,14 +5,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 
 //Screens
-import FoodScreen from "../screens/FoodScreen";
-import CartScreen from "../screens/Cart/CartScreen";
 import OrderScreen from "../screens/OrderScreen";
 import UserScreen from "../screens/UserScreen";
 import SettingScreen from "../screens/SettingScreen";
 
 import { Feather } from "@expo/vector-icons";
+
+//Stacks
 import HomeStack from "./HomeNavigator";
+import CartNavigator from './CartNavigator';
 
 
 import { View } from "native-base";
@@ -30,7 +31,7 @@ const MyTab = () => {
                     keyboardHidesTabBar: true,
 
                     showLabel: false,
-                    activeTintColor: "#e91e63",
+                    activeTintColor: "#ff6c00",
                 }}
             >
                 <Tab.Screen
@@ -57,8 +58,8 @@ const MyTab = () => {
                 />
 
                 <Tab.Screen
-                    name="CartScreen"
-                    component={CartScreen}
+                    name="Cart"
+                    component={CartNavigator}
                     options={{
                         tabBarLabel: "Cart",
                         tabBarIcon: ({ focused, color, size }) => {
@@ -68,7 +69,7 @@ const MyTab = () => {
                                     <CartIcon/>
                                 </View>
                             )
-                        },
+                        }
                     }}
                 />
                 <Tab.Screen

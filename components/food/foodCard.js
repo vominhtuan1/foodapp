@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Dimensions, Button, Image, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import NumberFormat from 'react-number-format';
 
 import { connect } from 'react-redux';
 import * as actions from '../../Redux/Actions/cartActions';
@@ -9,12 +9,6 @@ import * as actions from '../../Redux/Actions/cartActions';
 var { width } = Dimensions.get("window");
 
 
-const HandleText = (text) => {
-    if (text.length > 72) {
-        return `${text.substr(0, 70)}......`;
-    }
-    return `${text}`;
-};
 const FoodCard = (props) => {
 
     const [food, setFood] = useState(props.item)
@@ -24,19 +18,26 @@ const FoodCard = (props) => {
             style={styles.container}
             onPress={() => { props.navigation.navigate("FoodDetail", { food: food.item }) }}
         >
-            <Image source={food.item.src} style={styles.image} resizeMode="contain" />
+            <Image source={food.item.src} style={styles.image} />
             <View style={styles.content}>
-                <Text style={styles.name}>{food.item.name}</Text>
+                <Text style={styles.name}>
+                    {food.item.name.length > 14 ? food.item.name.substring(0, 14 - 3) + '...' : food.item.name}
+                </Text>
 
                 <View style={styles.price_addImage}>
-                    <Text>{food.item.price} đồng</Text>
+                    <NumberFormat
+                        value={food.item.price}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        renderText={value => <Text style={{ fontFamily: 'Comfortaa_Regular',padding: 3 }}>{value} đồng</Text>}
+                    />
                     <TouchableOpacity
                         onPress={() => {
                             props.addItemToCart(food.item)
                         }}
                     >
                         <Image
-                            source={require("../../assets/add.png")}
+                            source={require("../../assets/plus.png")}
                             style={styles.imageAdd}
                         />
                     </TouchableOpacity>
@@ -47,21 +48,32 @@ const FoodCard = (props) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return{
-        addItemToCart : (product) => 
-            dispatch(actions.addToCart({quantity: 1 , product}))
+    return {
+        addItemToCart: (product) =>
+            dispatch(actions.addToCart({ quantity: 1, product }))
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#FFF",
-        height: 220,
         width: width / 2 - 35,
-
+        marginBottom: 30,
+        marginLeft: 20,
         borderRadius: 20,
         alignItems: "center",
         marginHorizontal: 10,
+        borderWidth: 1,
+        borderColor: '#ececec',
+        bottom: -10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        elevation: 5,
     },
     image: {
         width: width / 2 - 35,
@@ -69,16 +81,18 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "transparent",
     },
-    content: {},
     name: {
+        marginTop: 10,
         color: "#4f4a4a",
         fontSize: 15,
-        fontWeight: "bold",
+        fontFamily: 'Comfortaa_Bold',
+        padding: 3
     },
 
     price_addImage: {
         flexDirection: "row",
         alignItems: "center",
+        marginBottom: 10
     },
     imageAdd: {
         marginLeft: 20,

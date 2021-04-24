@@ -23,7 +23,7 @@ const HeaderSearch = (props) => {
     setSelectedIconMess(false);
   }, [selectedIconMess]);
   return (
-    <Header style={{ backgroundColor: "rgb(254, 96, 50)" }} searchBar rounded>
+    <Header style={{ backgroundColor: "rgb(255, 128, 0)" }} searchBar rounded>
       <Item style={{ flex: 0.9 }}>
         <Icon name="search-outline" onPress={() => console.log("clicked")} />
         <Input

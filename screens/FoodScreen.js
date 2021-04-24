@@ -29,13 +29,13 @@ const FoodScreen = ({ navigation }) => {
 
   console.log("render foodScreen");
   return (
-    <Container>
+    <Container >
       <HeaderSearch isFocus={isFocus} foodName={getFoodName} />
 
       {focus ? (
-        <SearchListFood data={getFoodByName(foodName)} />
+        <SearchListFood data={getFoodByName(foodName)} navigation={navigation}/>
       ) : (
-        <ScrollView style={{ backgroundColor: "#ECF0F1" }}>
+        <ScrollView style={{ backgroundColor: "white" }}>
           <Banner />
           <ListCategory navigation={navigation} />
           <ListFood data={foods} navigation={navigation} />

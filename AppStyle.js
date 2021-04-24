@@ -24,6 +24,7 @@ export const FoodCard = StyleSheet.create({
     borderColor: "#cccccc",
     borderWidth: 2,
     borderRadius: 15,
+    backgroundColor: 'white'
   },
   photo: {
     width:
@@ -39,9 +40,10 @@ export const FoodCard = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#444444",
-    marginTop: 3,
+    marginTop: 5,
     marginRight: 5,
     marginLeft: 5,
+    fontFamily: 'Comfortaa_Bold'
   },
   price: {
     marginTop: 5,

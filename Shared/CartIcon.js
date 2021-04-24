@@ -5,11 +5,17 @@ import { Badge, Text } from 'native-base';
 import { connect } from 'react-redux';
 
 const CartIcon = (props) => {
+
+    var numberOfItem = 0;
+    props.cartItems.forEach(cart => {
+        return (numberOfItem += cart.quantity)
+    });
+
     return (
         <>
-            {props.cartItems.length ? (
+            {numberOfItem ? (
                 <Badge style={styles.badge}>
-                    <Text style={styles.text}>{props.cartItems.length}</Text>
+                    <Text style={styles.text}>{numberOfItem}</Text>
                 </Badge>
             ) : null}
         </>

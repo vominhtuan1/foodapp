@@ -22,8 +22,11 @@ export default function App() {
         console.log("font is loaded");
         async function loadFont() {
             await Font.loadAsync({
-                Roboto: require("native-base/Fonts/Roboto.ttf"),
-                Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+                Comfortaa_Bold: require("./assets/font/Comfortaa-Bold.ttf"),
+                Comfortaa_Light: require("./assets/font/Comfortaa-Light.ttf"),
+                Comfortaa_Medium: require("./assets/font/Comfortaa-Medium.ttf"),
+                Comfortaa_Regular: require("./assets/font/Comfortaa-Regular.ttf"),
+                Coiny_Regular: require("./assets/font/Coiny-Regular.ttf"),
                 ...Ionicons.font,
             });
             setLoading(false);

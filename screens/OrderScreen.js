@@ -6,7 +6,6 @@ const OrderScreen = ({ navigation }) => {
       <Text>This is Order Screen</Text>
       <Button
         title="Click me"
-        onPress={() => navigation.navigate("CartScreen")}
       />
     </View>
   );

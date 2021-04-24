@@ -1,69 +1,168 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, ScrollView, Image, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Dimensions, ScrollView, Image, SafeAreaView, TouchableOpacity, TouchableHighlight } from 'react-native';
+import NumberFormat from 'react-number-format';
+
+import * as action from '../../Redux/Actions/cartActions';
+import { connect } from 'react-redux';
 
 var { width, height } = Dimensions.get('window');
 
 const SingleFood = (props) => {
 
     const [food, setFood] = useState(props.route.params.food);
+    const [quantity, setQuantity] = useState(1);
+    const [totalPrice, setTotalPrice] = useState(food.price);
+
+    function editQuantity(action) {
+        if (action == "+") {
+            let newQty = quantity + 1;
+            setTotalPrice(food.price * newQty);
+            setQuantity(newQty);
+        } else {
+            if (quantity > 1) {
+                let newQty = quantity - 1;
+                setTotalPrice(food.price * newQty)
+                setQuantity(newQty);
+            }
+        }
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView style={{ padding: 10 }}>
+            <View>
                 <Image
-                    style={styles.image}
                     source={food.src}
+                    style={styles.image}
                 />
-                <View style={{ marginTop: 10 }}>
-                    <Text style={styles.title}>{food.name}</Text>
-                </View>
-                <View style={styles.underTitle}>
-                    <Text style={[{ flex: 1 }, styles.price]}>{food.price} đồng</Text>
-                    <View style={[styles.quantity, { flex: 1 }]}>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={{ fontSize: 25 }}>-</Text>
-                        </TouchableOpacity>
-                        <Text style={{ fontSize: 20 }}>2</Text>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={{ fontSize: 20 }}>+</Text>
-                        </TouchableOpacity>
+            </View>
+            <View style={styles.detail}>
+                <View style={styles.editQty}>
+                    <TouchableOpacity
+                        style={styles.btnMinus}
+                        onPress={() => editQuantity("-")}
+                    >
+                        <Text style={styles.textMinus}>-</Text>
+                    </TouchableOpacity>
+                    <View
+                        style={styles.viewQty}
+                    >
+                        <Text style={styles.quantity}>{quantity}</Text>
                     </View>
+                    <TouchableOpacity
+                        style={styles.btnPlus}
+                        onPress={() => editQuantity("+")}
+                    >
+                        <Text style={styles.textPlus}>+</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 10 }}>
-                    <Text style={{ fontSize: 20, fontWeight: '500' }}>Mô tả</Text>
-                    <Text style={{ fontSize: 15, color: '#808080' }}>Hủ tiếu xào đúng chuẩn là sợi hủ tiếu trắng đục vì được làm từ bột gạo nguyên chất. Sau khi nấu, hủ tiếu vẫn giữ được độ dai chứ không bở. Cách làm hủ tiếu xào với sự kết hợp với thịt và rau, tuy đơn giản, nhưng hủ tiếu xào lại là món ngon đầy đủ dinh dưỡng cho ngày bận rộn đấy.</Text>
+                <View style={{ padding: 10, top: -20 }}>
+
+                    <Text style={styles.title}>{food.name}</Text>
+
+                    <NumberFormat
+                        value={food.price}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        renderText={value => <Text style={styles.price}>{value} đồng</Text>}
+                    />
+
+                    <Text style={{ fontSize: 20, fontFamily: 'Comfortaa_Bold' }}>Mô tả</Text>
+
+                    <ScrollView style={{ height: 150 }}>
+                        <Text style={{fontFamily: 'Comfortaa_Regular',  lineHeight: 25}}>{food.description}</Text>
+                    </ScrollView>
 
                 </View>
-            </ScrollView>
+            </View>
             <View style={styles.bottomContainer}>
+
                 <View style={{ alignItems: 'center' }}>
-                    <Text>Tổng tiền</Text>
-                    <Text style={{ fontSize: 20, marginTop: 5 }}>20.000 đồng</Text>
+                    <Text style={{fontSize: 18, fontFamily: 'Comfortaa_Regular', padding: 3}}>Tổng tiền</Text>
+                    <NumberFormat
+                        value={totalPrice}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        renderText={value => <Text style={{fontSize: 19, fontFamily: 'Comfortaa_Regular', padding: 3}}>{value} đồng</Text>}
+                    />
                 </View>
-                <TouchableOpacity 
-                    style={styles.buttonAdd}
-                    //onPress={}    
-                >
-                    <Text style={{fontWeight: 'bold', color: 'white', fontSize: 16}}>Thêm vào giỏ hàng</Text>
+
+                <TouchableOpacity style={styles.buttonAdd} onPress={() => props.addItemToCart(food, quantity)}>
+                    <Text
+                        style={{
+                            color: 'white',
+                            fontSize: 15,
+                            fontFamily: 'Comfortaa_Bold'
+                        }}
+                    >
+                        Thêm vào giỏ hàng
+                    </Text>
                 </TouchableOpacity>
+
             </View>
         </SafeAreaView>
     )
 }
 
+const mapToDispatchToProps = (dispatch) => {
+    return {
+        addItemToCart: (product, quantity) =>
+            dispatch(action.addToCart({ product, quantity }))
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#ffffff",
-        padding: 10,
         height: '100%'
     },
     image: {
-        width: "100%",
-        height: 250,
-        borderRadius: 20
+        width: width,
+        height: 300
+    },
+    detail: {
+        backgroundColor: 'white',
+        width: width,
+        top: -50,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30
+    },
+    editQty: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        top: -20,
+        height: 40,
+        shadowColor: "#ff6c00",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 3,
+        shadowRadius: 2,
+        elevation: 10,
+    },
+    btnMinus: {
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        backgroundColor: '#ff6c00',
+        width: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    textMinus: {
+        color: 'white',
+        fontSize: 30,
+        top: -2
+    },
+    viewQty: {
+        width: 40,
+        backgroundColor: '#ff6c00',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     title: {
-        fontSize: 30,
+        fontSize: 25,
+        fontFamily: 'Coiny_Regular',
+        padding: 3
     },
     button: {
         width: 60,
@@ -71,20 +170,32 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#ececec',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+
     },
     quantity: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        color: 'white',
+        fontWeight: 'bold'
     },
     price: {
-        fontSize: 20
+        fontSize: 20,
+        alignSelf: 'flex-end',
+        fontFamily: 'Comfortaa_Regular',
+        color: '#ff6c00',
+        padding: 3
     },
-    underTitle: {
-        marginTop: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+    btnPlus: {
+        backgroundColor: '#ff6c00',
+        width: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomRightRadius: 20,
+        borderTopRightRadius: 20
+    },
+    textPlus: {
+        color: 'white',
+        fontSize: 25,
+        top: -2
     },
     bottomContainer: {
         width: width,
@@ -96,14 +207,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 10,
-
-        elevation: 5,
         backgroundColor: 'white'
     },
     buttonAdd: {
@@ -116,4 +219,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SingleFood;
+export default connect(null, mapToDispatchToProps)(SingleFood);
