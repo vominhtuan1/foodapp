@@ -86,7 +86,7 @@ const CartScreen = (props) => {
                                 style={styles.buttonContainer}
                                 onPress={() => props.navigation.navigate("Checkout")}    
                             >
-                                <Text style={{ fontSize: 18, fontFamily: 'Comfortaa_Bold', color: 'black' }}>Xác nhận</Text>
+                                <Text style={{ fontSize: 18, fontFamily: 'Comfortaa_Bold', color: 'black' }}>Đặt hàng</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

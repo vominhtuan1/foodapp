@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 
 //Screens
-import OrderScreen from "../screens/OrderScreen";
 import UserScreen from "../screens/UserScreen";
 import SettingScreen from "../screens/SettingScreen";
 
@@ -14,6 +13,7 @@ import { Feather } from "@expo/vector-icons";
 //Stacks
 import HomeStack from "./HomeNavigator";
 import CartNavigator from './CartNavigator';
+import OrderNavigator from './OrderNavigator';
 
 
 import { View } from "native-base";
@@ -46,7 +46,7 @@ const MyTab = () => {
                 />
                 <Tab.Screen
                     name="Order"
-                    component={OrderScreen}
+                    component={OrderNavigator}
                     options={{
                         tabBarLabel: "Đơn hàng",
                         tabBarIcon: ({ focused, color, size }) => {
@@ -67,6 +67,20 @@ const MyTab = () => {
                                 <View>
                                     <Ionicons name="cart-sharp" size={size} color={color} />
                                     <CartIcon/>
+                                </View>
+                            )
+                        }
+                    }}
+                />
+                <Tab.Screen
+                    name="Setting"
+                    component={SettingScreen}
+                    options={{
+                        tabBarLabel: "Setting",
+                        tabBarIcon: ({focused, color, size}) => {
+                            return (
+                                <View>
+                                    <FontAwesome name="cog" size={size} color={color} />
                                 </View>
                             )
                         }
