@@ -13,8 +13,7 @@ import FoodScreen from "./screens/FoodScreen";
 import CategoryItem from "./components/category/categoryItem";
 
 import MyTab from "./navigation/Tab";
-
-
+import LoginStack from "./navigation/LoginNavigator";
 export default function App() {
     LogBox.ignoreAllLogs();
     const [loading, setLoading] = useState(true);
@@ -45,7 +44,7 @@ export default function App() {
     } else {
         return (
             <Provider store={store}>
-                <MyTab />
+                <LoginStack />
             </Provider>
         );
     }

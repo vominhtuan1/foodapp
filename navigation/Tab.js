@@ -25,7 +25,7 @@ const Tab = createBottomTabNavigator();
 const MyTab = () => {
     return (
 
-        <NavigationContainer>
+        
             <Tab.Navigator
                 tabBarOptions={{
                     keyboardHidesTabBar: true,
@@ -97,7 +97,7 @@ const MyTab = () => {
                     }}
                 />
             </Tab.Navigator>
-        </NavigationContainer>
+       
     );
 };
 export default MyTab;
