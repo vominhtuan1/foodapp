@@ -18,9 +18,6 @@ const Pending = () => {
                                             Mã ĐH: {item.code}
                                         </Text>
                                         <Text     style={styles.TextInput}>
-                                            Tên ĐH: {item.name}
-                                        </Text>
-                                        <Text     style={styles.TextInput}>
                                             Thành tiền: {item.cost}
                                         </Text>
                                     </View>
