@@ -20,12 +20,12 @@ function LoginStack() {
           component={MyTab}
         
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{ headerShown: false }}
           name="Register"
           component={Register}
         
-        /> */}
+        /> 
      
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet ,TouchableOpacity} from 'react-native';
-
+import Register from "../Register";
 // create a component
 const BT_Register = ({navigation}) =>{
      
