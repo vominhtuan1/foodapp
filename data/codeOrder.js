@@ -36,3 +36,4 @@ export const codeOrder = [
         cost:"160.000đ",
       },
 ];
+export default codeOrder

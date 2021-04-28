@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View,Text,StyleSheet,ScrollView} from 'react-native';
+import {View,Text,StyleSheet,ScrollView,TouchableOpacity} from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import codeOrder from '../../data/codeOrder';
 const Pending = () => {
@@ -7,24 +7,28 @@ const Pending = () => {
     return(
         <View>
             <ScrollView>
-                <View style={styles.container}>
-                    
-                    <View style={styles.header}>
-                        <SimpleLineIcons style={styles.Icon} name="notebook" size={40} color="black" />
-                        <View style={styles.insize}>
-                            <Text     style={styles.TextInput}>
-                                Mã ĐH: DH001
-                            </Text>
-                            <Text     style={styles.TextInput}>
-                                Tên ĐH: Cơm trắng
-                            </Text>
-                            <Text     style={styles.TextInput}>
-                                Thành tiền: 165.000đ
-                            </Text>
+                {
+                    codeOrder.map((item, index) => (
+                        <View key = {item.id} style={styles.container}>
+                            <TouchableOpacity>
+                                <View  style={styles.header} >
+                                    <SimpleLineIcons style={styles.Icon} name="notebook" size={40} color="black" />
+                                    <View style={styles.insize}>
+                                        <Text     style={styles.TextInput}>
+                                            Mã ĐH: {item.code}
+                                        </Text>
+                                        <Text     style={styles.TextInput}>
+                                            Tên ĐH: {item.name}
+                                        </Text>
+                                        <Text     style={styles.TextInput}>
+                                            Thành tiền: {item.cost}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                        
-                    </View>
-                </View>
+                    ))
+                }
             </ScrollView>
         </View>
     )
@@ -39,8 +43,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#c4c3bc",
         borderRadius: 30,
         width: "90%",
-        height: "100%",
-        marginBottom: 20,
+        height: 140,
+        marginBottom: 10,
         alignItems: "center",
         justifyContent:'center',
     },
