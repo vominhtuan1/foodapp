@@ -5,7 +5,7 @@ import codeOrder from '../../data/codeOrder';
 const Pending = () => {
    
     return(
-        <View>
+        <View >
             <ScrollView>
                 {
                     codeOrder.map((item, index) => (
@@ -40,13 +40,21 @@ const styles = StyleSheet.create({
     },
     header:{
         flexDirection: 'row',
-        backgroundColor: "#c4c3bc",
+        backgroundColor: "white",
         borderRadius: 30,
         width: "90%",
         height: 140,
         marginBottom: 10,
         alignItems: "center",
-        justifyContent:'center',
+        justifyContent: 'space-between',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        elevation: 5,
     },
     container: {
         alignItems: "center",
