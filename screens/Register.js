@@ -53,7 +53,7 @@ function Register ({navigation}) {
                 <FontAwesome5 style={styles.keyIcon} name="key" size={24} color="gray" />
                 <TextInput
                     style={styles.PassTextInput}
-                    placeholder="Repeat PassWord"
+                    placeholder="Re PassWord"
                     placeholderTextColor="gray"
                     secureTextEntry={focus?true:false}
                 />
@@ -65,6 +65,26 @@ function Register ({navigation}) {
                 }} />
                    :    <Feather name="eye-off" style = {styles.eyeIcon}  size={24} color="gray"onPress={()=>setFocus(false)} />
                  }                               
+            </View>
+             {/* NAME */}
+             <View style={styles.inputView}>
+                <FontAwesome style = {styles.UserIcon} name="user" size={24} color="gray" />
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder="Name"
+                    placeholderTextColor="gray"
+                />
+               
+              
+            </View> 
+            {/* SDT */}
+            <View style={styles.inputView}>
+                <Feather style = {styles.UserIcon} name="phone-call" size={24} color="gray" />
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder="Phone Number"
+                    placeholderTextColor="gray"
+                />        
             </View>
             {/* LOGIN */}
             <BT_Login navigation={navigation}/>
@@ -92,7 +112,7 @@ const styles = StyleSheet.create({
     logo: {
         
         width:400,
-        height:400,
+        height:300,
 
       },
     forgot_button: {
