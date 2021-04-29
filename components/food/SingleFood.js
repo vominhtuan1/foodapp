@@ -39,7 +39,7 @@ const SingleFood = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Image source={food.src} style={styles.image} />
+        <Image source={{ uri: food.image }} style={styles.image} />
       </View>
       <View style={styles.detail}>
         <View style={styles.editQty}>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   editQty: {
     flexDirection: "row",
     alignSelf: "center",
-    top: 0,
+    top: -20,
     height: 40,
     shadowColor: "#ff6c00",
     shadowOffset: {

@@ -13,27 +13,43 @@ import HeaderSearch from "../components/header";
 import SearchListFood from "../components/food/searchFoodList";
 import Banner from "../components/food/banner";
 import ListCategory from "../components/category/listCategory";
-import { Foods } from "../data/food.js";
-import { getFoodByName } from "../data/fakeApi";
-const FoodScreen = ({ navigation }) => {
-  const [foods, setFoods] = useState(Foods);
 
+import Axios from "axios";
+const FoodScreen = ({ navigation }) => {
+  const [foods, setFoods] = useState();
   const [focus, setFocus] = useState(false);
   const [foodName, setFoodName] = useState();
+  useEffect(() => {
+    console.log("connect to api food");
+    Axios.get("https://food-order-app12.herokuapp.com/api/foods")
+      .then((res) => {
+        setFoods(res.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   function isFocus(focus) {
     setFocus(focus);
   }
   function getFoodName(name) {
     setFoodName(name);
   }
-
+  function getFoodByName(name) {
+    if (!name) return foods;
+    return foods.filter((x) => {
+      return x.name.toUpperCase().includes(name.toUpperCase());
+    });
+  }
   console.log("render foodScreen");
   return (
-    <Container >
+    <Container>
       <HeaderSearch isFocus={isFocus} foodName={getFoodName} />
 
       {focus ? (
-        <SearchListFood data={getFoodByName(foodName)} navigation={navigation}/>
+        <SearchListFood
+          data={getFoodByName(foodName)}
+          navigation={navigation}
+        />
       ) : (
         <ScrollView style={{ backgroundColor: "white" }}>
           <Banner />

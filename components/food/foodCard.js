@@ -27,7 +27,7 @@ const FoodCard = (props) => {
         props.navigation.navigate("FoodDetail", { food: food });
       }}
     >
-      <Image source={food.src} style={styles.image} />
+      <Image source={{ uri: food.image }} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.name}>
           {food.name.length > 14

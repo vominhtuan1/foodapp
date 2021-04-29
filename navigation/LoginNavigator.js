@@ -1,12 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import Login from '../screens/Login';
-import MyTab from '../navigation/Tab';
-//import Register from '../screens/register'
+import Login from "../screens/Login";
+import MyTab from "../navigation/Tab";
+import Register from "../screens/Register";
 import { NavigationContainer } from "@react-navigation/native";
 const Stack = createStackNavigator();
 function LoginStack() {
-    return (
+  return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -15,20 +15,23 @@ function LoginStack() {
           component={Login}
         />
         <Stack.Screen
+          options={{
+            headerShown: true,
+            title: "",
+            headerStyle: {
+              backgroundColor: "pink",
+            },
+          }}
+          name="Register"
+          component={Register}
+        />
+        <Stack.Screen
           options={{ headerShown: false }}
           name="Home"
           component={MyTab}
-        
         />
-        {/* <Stack.Screen
-          options={{ headerShown: false }}
-          name="Register"
-          component={Register}
-        
-        /> */}
-     
       </Stack.Navigator>
     </NavigationContainer>
-    );
-  }
-  export default LoginStack;
+  );
+}
+export default LoginStack;

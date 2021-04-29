@@ -1,4 +1,3 @@
-import { Foods } from "../data/food";
 export function getFoodByName(name) {
   if (!name) return Foods;
   return Foods.filter((x) => {

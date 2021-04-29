@@ -25,7 +25,7 @@ const SearchListFood = (prop) => {
               <FoodItem
                 name={item.name}
                 price={item.price}
-                src={item.src}
+                image={item.image}
                 key={item.id}
                 id={item.id}
                 description={item.description}
