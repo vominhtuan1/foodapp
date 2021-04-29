@@ -1,8 +1,9 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React, {useState } from 'react';
-import {StyleSheet,View,Image,TextInput,TouchableOpacity,Text} from 'react-native';
+import {StyleSheet,View,Image,TextInput,TouchableOpacity,Text, KeyboardAvoidingView, Platform} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import BT_Login from "./ClassButton/BT_Login";
 const Stack = createStackNavigator();
@@ -21,7 +22,7 @@ function Register ({navigation}) {
             </View>
             {/* USERNAME */}
             <View style={styles.inputView}>
-                <FontAwesome style = {styles.UserIcon} name="user" size={24} color="gray" />
+                <Feather  style = {styles.UserIcon} name="user" size={24} color="gray" />
                 <TextInput
                     style={styles.TextInput}
                     placeholder="UserName"
@@ -32,7 +33,7 @@ function Register ({navigation}) {
             </View>
             {/* PASSWORD */}
             <View style={styles.PassinputView}>
-                <FontAwesome5 style={styles.keyIcon} name="key" size={24} color="gray" />
+                <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
                 <TextInput
                     style={styles.PassTextInput}
                     placeholder="PassWord"
@@ -50,7 +51,7 @@ function Register ({navigation}) {
             </View>
              {/* REPASSWORD */}
              <View style={styles.PassinputView}>
-                <FontAwesome5 style={styles.keyIcon} name="key" size={24} color="gray" />
+                <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
                 <TextInput
                     style={styles.PassTextInput}
                     placeholder="Re PassWord"
@@ -68,11 +69,12 @@ function Register ({navigation}) {
             </View>
              {/* NAME */}
              <View style={styles.inputView}>
-                <FontAwesome style = {styles.UserIcon} name="user" size={24} color="gray" />
+                <Feather  style = {styles.UserIcon} name="user" size={24} color="gray" />
                 <TextInput
                     style={styles.TextInput}
                     placeholder="Name"
                     placeholderTextColor="gray"
+                    keyboardType='name-phone-pad'
                 />
                
               
@@ -84,8 +86,24 @@ function Register ({navigation}) {
                     style={styles.TextInput}
                     placeholder="Phone Number"
                     placeholderTextColor="gray"
+                    keyboardType='number-pad'
+                    maxLength={10}
                 />        
             </View>
+             {/* ADDRESS */}
+            
+            <KeyboardAvoidingView
+                behavior ={Platform.OS==='android'? 'padding':null}
+            >
+            <View style={styles.inputView}>
+                <FontAwesome style = {styles.UserIcon} name="address-book-o" size={24} color="gray" />
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder="Address"
+                    placeholderTextColor="gray"
+                />        
+            </View>
+            </KeyboardAvoidingView>
             {/* LOGIN */}
             <BT_Login navigation={navigation}/>
 
