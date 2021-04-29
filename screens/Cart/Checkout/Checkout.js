@@ -14,6 +14,8 @@ const methods = [
 
 const Checkout = (props) => {
 
+    const [subPrice, setSubPrice] = useState();
+    const [totalPrice, setTotalPrice] = useState()
     const [orderItems, setOrderItems] = useState();
     const [address, setAddress] = useState();
     const [phone, setPhone] = useState();
@@ -21,6 +23,8 @@ const Checkout = (props) => {
 
     useEffect(() => {
         setOrderItems(props.cartItems)
+        setSubPrice(props.route.params.total)
+        setTotalPrice(props.route.params.total+20000)
 
         return () => {
             setOrderItems();
@@ -31,6 +35,7 @@ const Checkout = (props) => {
         let order ={
             address,
             phone,
+            totalPrice,
             dateOrdered: Date.now(),
             orderItems
         }
@@ -52,14 +57,6 @@ const Checkout = (props) => {
                             value={address}
                             onChangeText={(text) => setAddress(text) }
                         />
-                        <Text style={styles.text}>Số điện thoại</Text>
-                        <TextInput
-                            style={styles.TextInput}
-                            placeholder='Nhập số điện thoại'
-                            keyboardType='numeric'
-                            value={phone}
-                            onChangeText={(text) => setPhone(text) }
-                        />
                     </View>
 
                     <View style={styles.deliveryContainer}>
@@ -77,8 +74,8 @@ const Checkout = (props) => {
 
             <View>
                 <View style={[styles.something, { marginTop: 5 }]}>
-                    <Text style={styles.textContainer}>Món ăn(4)</Text>
-                    <Text style={styles.textContainer}>100,000 đồng</Text>
+                    <Text style={styles.textContainer}>Món ăn</Text>
+                    <Text style={styles.textContainer}>{subPrice} đồng</Text>
                 </View>
 
                 <View style={styles.something}>
@@ -90,7 +87,7 @@ const Checkout = (props) => {
 
                 <View style={styles.something}>
                     <Text style={styles.textContainer}>Tổng tiền</Text>
-                    <Text style={styles.textContainer}>120,000 đồng</Text>
+                    <Text style={styles.textContainer}>{totalPrice} đồng</Text>
                 </View>
 
                 <TouchableOpacity 

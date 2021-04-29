@@ -84,7 +84,7 @@ const CartScreen = (props) => {
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 style={styles.buttonContainer}
-                                onPress={() => props.navigation.navigate("Checkout")}    
+                                onPress={() => props.navigation.navigate("Checkout",{total: total})}    
                             >
                                 <Text style={{ fontSize: 18, fontFamily: 'Comfortaa_Bold', color: 'black' }}>Đặt hàng</Text>
                             </TouchableOpacity>

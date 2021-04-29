@@ -31,6 +31,7 @@ export default class RadioButton extends Component {
                                     this.setState({
                                         value: res.key,
                                     });
+                                    this.props.setSelected(res.text);
                                 }}>
                                 {value === res.key && <View style={styles.selectedRb} />}
                             </TouchableOpacity>

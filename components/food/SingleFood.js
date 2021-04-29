@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   editQty: {
     flexDirection: "row",
     alignSelf: "center",
-    top: 0,
+    top: -20,
     height: 40,
     shadowColor: "#ff6c00",
     shadowOffset: {

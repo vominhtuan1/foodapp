@@ -41,8 +41,8 @@ const Thankyou = (props) => {
             </View>
 
             <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{fontSize: 18, color: '#a4a7ab', fontFamily: 'Comfortaa_Medium'}}>6 items will be delivered at</Text>
-                <Text style={{fontSize: 18, paddingTop: 5,fontFamily: 'Comfortaa_Bold'}}>{confirm.order.address}</Text>
+                <Text style={{fontSize: 18, color: '#a4a7ab', fontFamily: 'Comfortaa_Medium'}}>Đơn hàng sẽ được giao tới</Text>
+                <Text style={{fontSize: 18, paddingTop: 5,fontFamily: 'Comfortaa_Bold',textAlign: 'center'}}>{confirm.order.address}</Text>
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
                 <TouchableOpacity

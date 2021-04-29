@@ -5,9 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 
 //Screens
-import UserScreen from "../screens/UserScreen";
 import SettingScreen from "../screens/SettingScreen";
-
+import UserScreen from '../screens/User/UserScreen';
 import { Feather } from "@expo/vector-icons";
 
 //Stacks

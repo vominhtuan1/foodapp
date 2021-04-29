@@ -1,12 +1,14 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React, {useState } from 'react';
-import {StyleSheet,View,Image,TextInput,TouchableOpacity,Text} from 'react-native';
+import {StyleSheet,View,Image,TextInput,TouchableOpacity,Text, Dimensions} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
 import BT_Login from "./ClassButton/BT_Login";
 import BT_Register from "./ClassButton/BT_Resigter";
 const Stack = createStackNavigator();
+
+var {width, height} = Dimensions.get('window');
 
 function Login({navigation}) {
     const [focus,setFocus]=useState(false)
@@ -79,8 +81,8 @@ const styles = StyleSheet.create({
     },
     logo: {
         
-        width:400,
-        height:400,
+        width:width,
+        height:height*0.4,
 
       },
     forgot_button: {
