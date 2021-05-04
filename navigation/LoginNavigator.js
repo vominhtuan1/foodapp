@@ -16,11 +16,7 @@ function LoginStack() {
         />
         <Stack.Screen
           options={{
-            headerShown: true,
-            title: "",
-            headerStyle: {
-              backgroundColor: "pink",
-            },
+            headerShown: false,
           }}
           name="Register"
           component={Register}

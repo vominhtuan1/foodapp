@@ -1,45 +1,38 @@
-import { createStackNavigator } from "@react-navigation/stack";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, Image, TextInput, Alert } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import BT_Register from "./ClassButton/BT_Resigter";
 import axios from "axios";
-const Stack = createStackNavigator();
 
 function Register({ navigation }) {
   const [focus, setFocus] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
+  const [phone, setPhone] = useState("");
   const handleRegister = () => {
-    // console.log({ username, password, repassword });
     if (!username) {
       Alert.alert("\n", "Vui lòng nhập tài khoản");
     } else if (!password) {
       Alert.alert("\n", "Vui long nhập mật khẩu");
     } else if (password !== repassword) {
       Alert.alert("\n", "Mật khẩu không khớp");
+    } else if (!phone) {
+      Alert.alert("\n", "Vui lòng nhập số điện thoại");
     } else {
       axios
         .post("https://food-order-app12.herokuapp.com/api/users/register", {
           username,
           password,
+          phone,
           isAdmin: false,
         })
         .then((res) => {
           Alert.alert("Đăng kí tài khoản thành công");
           setTimeout(() => {
-            navigation.navigate("Home");
+            console.log(res.data);
+            navigation.navigate("Login");
           }, 1000);
         })
         .catch((err) => {
@@ -55,96 +48,100 @@ function Register({ navigation }) {
         <Image style={styles.logo} source={require("../assets/logo.png")} />
       </View>
       {/* USERNAME */}
-      <View style={styles.content}>
-        <View style={styles.inputView}>
-          <FontAwesome
-            style={styles.UserIcon}
-            name="user"
-            size={24}
-            color="gray"
-          />
-          <TextInput
-            style={styles.TextInput}
-            value={username}
-            placeholder="UserName"
-            placeholderTextColor="gray"
-            onChangeText={(value) => setUsername(value)}
-          />
-        </View>
-        {/* PASSWORD */}
-        <View style={styles.PassinputView}>
-          <FontAwesome5
-            style={styles.keyIcon}
-            name="key"
-            size={24}
-            color="gray"
-          />
-          <TextInput
-            style={styles.PassTextInput}
-            placeholder="PassWord"
-            value={password}
-            onChangeText={(value) => setPassword(value)}
-            placeholderTextColor="gray"
-            secureTextEntry={focus ? true : false}
-          />
-          {!focus ? (
-            <FontAwesome
-              style={styles.eyeIcon}
-              name="eye"
-              size={24}
-              color="gray"
-              onPress={() => {
-                setFocus(true);
-              }}
-            />
-          ) : (
-            <Feather
-              name="eye-off"
-              style={styles.eyeIcon}
-              size={24}
-              color="gray"
-              onPress={() => setFocus(false)}
-            />
-          )}
-        </View>
-        {/* REPASSWORD */}
-        <View style={styles.PassinputView}>
-          <FontAwesome5
-            style={styles.keyIcon}
-            name="key"
-            size={24}
-            color="gray"
-          />
-          <TextInput
-            style={styles.PassTextInput}
-            value={repassword}
-            onChangeText={(value) => setRepassword(value)}
-            placeholder="Repeat PassWord"
-            placeholderTextColor="gray"
-            secureTextEntry={focus ? true : false}
-          />
-          {!focus ? (
-            <FontAwesome
-              style={styles.eyeIcon}
-              name="eye"
-              size={24}
-              color="gray"
-              onPress={() => {
-                setFocus(true);
-              }}
-            />
-          ) : (
-            <Feather
-              name="eye-off"
-              style={styles.eyeIcon}
-              size={24}
-              color="gray"
-              onPress={() => setFocus(false)}
-            />
-          )}
-        </View>
-        <BT_Register onPress={handleRegister} />
+      <View style={styles.inputView}>
+        <Feather style={styles.UserIcon} name="user" size={24} color="gray" />
+        <TextInput
+          value={username}
+          style={styles.TextInput}
+          placeholder="Tên tài khoản"
+          placeholderTextColor="gray"
+          onChangeText={(text) => setUsername(text)}
+        />
       </View>
+      {/* PASSWORD */}
+      <View style={styles.PassinputView}>
+        <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
+        <TextInput
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          style={styles.PassTextInput}
+          placeholder="Mật khẩu"
+          placeholderTextColor="gray"
+          secureTextEntry={focus ? true : false}
+        />
+        {!focus ? (
+          <Feather
+            name="eye-off"
+            style={styles.eyeIcon}
+            size={24}
+            color="gray"
+            onPress={() => setFocus(true)}
+          />
+        ) : (
+          <FontAwesome
+            style={styles.eyeIcon}
+            name="eye"
+            size={24}
+            color="gray"
+            onPress={() => {
+              setFocus(false);
+            }}
+          />
+        )}
+      </View>
+      {/* REPASSWORD */}
+      <View style={styles.PassinputView}>
+        <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
+        <TextInput
+          value={repassword}
+          onChangeText={(text) => setRepassword(text)}
+          style={styles.PassTextInput}
+          placeholder="Nhập lại mật khẩu"
+          placeholderTextColor="gray"
+          secureTextEntry={focus ? true : false}
+        />
+        {!focus ? (
+          <Feather
+            name="eye-off"
+            style={styles.eyeIcon}
+            size={24}
+            color="gray"
+            onPress={() => setFocus(true)}
+          />
+        ) : (
+          <FontAwesome
+            style={styles.eyeIcon}
+            name="eye"
+            size={24}
+            color="gray"
+            onPress={() => {
+              setFocus(false);
+            }}
+          />
+        )}
+      </View>
+
+      {/* SDT */}
+      <View style={styles.inputView}>
+        <Feather
+          style={styles.UserIcon}
+          name="phone-call"
+          size={24}
+          color="gray"
+        />
+        <TextInput
+          value={phone}
+          onChangeText={(number) => setPhone(number)}
+          style={styles.TextInput}
+          placeholder="Số điện thoại"
+          placeholderTextColor="gray"
+          keyboardType="number-pad"
+          maxLength={10}
+        />
+      </View>
+
+      {/* Register*/}
+      <BT_Register onPress={handleRegister} />
     </View>
   );
 }
@@ -152,21 +149,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  content: {
-    marginTop: 10,
     alignItems: "center",
+    justifyContent: "center",
   },
   Logocontainer: {
+    flex: 1,
     backgroundColor: "pink",
-    //marginTop: 50,
-
+    marginTop: 0,
+    marginBottom: 50,
     justifyContent: "center",
     alignItems: "center",
   },
   logo: {
     width: 400,
-    height: 200,
+    height: 300,
   },
   forgot_button: {
     height: 30,

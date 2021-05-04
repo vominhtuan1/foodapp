@@ -1,5 +1,4 @@
 //import liraries
-import { useLinkProps } from "@react-navigation/native";
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -7,12 +6,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 const BT_Login = (props) => {
   return (
     <View>
-      <TouchableOpacity
-        style={styles.loginBtn}
-        onPress={() => {
-          props.onPress();
-        }}
-      >
+      <TouchableOpacity style={styles.loginBtn} onPress={() => props.onPress()}>
         <Text style={styles.loginText}>Đăng nhập</Text>
       </TouchableOpacity>
     </View>

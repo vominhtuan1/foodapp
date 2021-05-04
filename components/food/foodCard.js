@@ -18,7 +18,6 @@ var { width } = Dimensions.get("window");
 
 const FoodCard = (props) => {
   const [food, setFood] = useState(props.item);
-  console;
 
   return (
     <TouchableOpacity

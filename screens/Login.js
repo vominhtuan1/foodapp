@@ -19,12 +19,20 @@ function Login({ navigation }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const handleLogin = () => {
+    if (!username) {
+      return Alert.alert("\n", "Vui lòng nhập tài khoản");
+    }
+    if (!password) {
+      return Alert.alert("\n", "Vui lòng nhập mật khẩu");
+    }
+
     axios
       .post("https://food-order-app12.herokuapp.com/api/users/login", {
         username,
         password,
       })
       .then((res) => {
+        console.log(navigation);
         navigation.navigate("Home");
       })
       .catch((error) => {
@@ -54,7 +62,7 @@ function Login({ navigation }) {
         <TextInput
           style={styles.TextInput}
           value={username}
-          placeholder="UserName"
+          placeholder="Tên tài khoản"
           placeholderTextColor="gray"
           onChangeText={(text) => setUsername(text)}
         />
@@ -70,7 +78,7 @@ function Login({ navigation }) {
         <TextInput
           style={styles.PassTextInput}
           value={password}
-          placeholder="PassWord"
+          placeholder="Mật khẩu"
           placeholderTextColor="gray"
           secureTextEntry={focus ? false : true}
           onChangeText={(text) => setPassword(text)}
@@ -97,7 +105,7 @@ function Login({ navigation }) {
       </View>
       {/* FOGOT PASSWORD */}
       <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
+        <Text style={styles.forgot_button}>Quên mật khẩu?</Text>
       </TouchableOpacity>
       {/* LOGIN */}
 

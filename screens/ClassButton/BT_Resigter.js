@@ -3,14 +3,12 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 // create a component
-const BT_Register = (props) => {
+const BT_Register = (prop) => {
   return (
     <View>
       <TouchableOpacity
         style={styles.registerbtn}
-        onPress={() => {
-          props.onPress();
-        }}
+        onPress={() => prop.onPress()}
       >
         <Text style={styles.registerText}>Đăng kí</Text>
       </TouchableOpacity>

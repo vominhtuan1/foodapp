@@ -10,21 +10,11 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import RadioButton from "../../../components/RadioButton";
+import MethodCheckout from "./MeThodCheckout";
 
 import { connect } from "react-redux";
 
 var { width, height } = Dimensions.get("window");
-
-const methods = [
-  {
-    text: "Thanh toán khi nhận hàng",
-    key: 1,
-    image: require("../../../assets/loan.png"),
-  },
-  { text: "Mono", key: 2, image: require("../../../assets/momo.png") },
-  { text: "PayPal", key: 3, image: require("../../../assets/paypal.png") },
-];
 
 const Checkout = (props) => {
   const [subPrice, setSubPrice] = useState();
@@ -32,7 +22,6 @@ const Checkout = (props) => {
   const [orderItems, setOrderItems] = useState();
   const [address, setAddress] = useState();
   const [phone, setPhone] = useState();
-  const [selected, setSelected] = useState();
 
   useEffect(() => {
     setOrderItems(props.cartItems);
@@ -80,7 +69,7 @@ const Checkout = (props) => {
 
             <View style={[styles.paymentContainer, { marginBottom: 20 }]}>
               <Text style={styles.text}>Thanh Toán</Text>
-              <RadioButton PROP={methods} />
+              <MethodCheckout />
             </View>
           </View>
         </ScrollView>
