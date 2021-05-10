@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -14,10 +14,27 @@ import { Feather } from "@expo/vector-icons";
 import BT_Login from "./ClassButton/BT_Login";
 import BT_Register from "./ClassButton/BT_Resigter";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 function Login({ navigation }) {
   const [focus, setFocus] = useState(false);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const getUser = async () => {
+    const token = await AsyncStorage.getItem("token");
+    const userID = await AsyncStorage.getItem("userID");
+    const username = await AsyncStorage.getItem("username");
+    const password = await AsyncStorage.getItem("password");
+    return { token, userID, username, password };
+  };
+  useEffect(() => {
+    getUser().then((user) => {
+      setUsername(user.username);
+      setPassword(user.password);
+      if (user.token) {
+        navigation.navigate("Home");
+      }
+    });
+  }, []);
   const handleLogin = () => {
     if (!username) {
       return Alert.alert("\n", "Vui lòng nhập tài khoản");
@@ -25,14 +42,17 @@ function Login({ navigation }) {
     if (!password) {
       return Alert.alert("\n", "Vui lòng nhập mật khẩu");
     }
-
+    AsyncStorage.setItem("username", username);
+    AsyncStorage.setItem("password", password);
     axios
       .post("https://food-order-app12.herokuapp.com/api/users/login", {
         username,
         password,
       })
       .then((res) => {
-        console.log(navigation);
+        console.log(res.data);
+        AsyncStorage.setItem("userID", res.data.userID);
+        AsyncStorage.setItem("token", res.data.token);
         navigation.navigate("Home");
       })
       .catch((error) => {

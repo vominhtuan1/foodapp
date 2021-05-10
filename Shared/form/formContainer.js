@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const FormContainer = (props) => {
+const Item= (props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{props.title}</Text>

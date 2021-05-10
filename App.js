@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, Dimensions, LogBox } from "react-native";
-import { Container, Text } from "native-base";
+import { LogBox, View, Text } from "react-native";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 
 //  Redux
 import { Provider } from "react-redux";
 import store from "./Redux/store";
-
 // Navigations
-import FoodScreen from "./screens/FoodScreen";
-import CategoryItem from "./components/category/categoryItem";
 
-import MyTab from "./navigation/Tab";
 import LoginStack from "./navigation/LoginNavigator";
 export default function App() {
   LogBox.ignoreAllLogs();

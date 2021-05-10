@@ -6,13 +6,14 @@ import { FontAwesome } from "@expo/vector-icons";
 
 //Screens
 import SettingScreen from "../screens/SettingScreen";
-import UserScreen from "../screens/User/UserScreen";
+
 import { Feather } from "@expo/vector-icons";
 
 //Stacks
 import HomeStack from "./HomeNavigator";
 import CartNavigator from "./CartNavigator";
 import OrderNavigator from "./OrderNavigator";
+import UserStack from "./UserNavigator";
 
 import { View } from "native-base";
 import CartIcon from "../Shared/CartIcon";
@@ -81,7 +82,7 @@ const MyTab = () => {
       />
       <Tab.Screen
         name="User"
-        component={UserScreen}
+        component={UserStack}
         options={{
           tabBarLabel: "Tôi",
           tabBarIcon: ({ focused, color, size }) => {
