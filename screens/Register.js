@@ -67,19 +67,10 @@ function Register ({navigation}) {
                    :    <Feather name="eye-off" style = {styles.eyeIcon}  size={24} color="gray"onPress={()=>setFocus(false)} />
                  }                               
             </View>
-             {/* NAME */}
-             <View style={styles.inputView}>
-                <Feather  style = {styles.UserIcon} name="user" size={24} color="gray" />
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="Name"
-                    placeholderTextColor="gray"
-                    keyboardType='name-phone-pad'
-                />
-               
-              
-            </View> 
             {/* SDT */}
+            <KeyboardAvoidingView
+                behavior ={Platform.OS==='android'? 'padding':null}
+            >
             <View style={styles.inputView}>
                 <Feather style = {styles.UserIcon} name="phone-call" size={24} color="gray" />
                 <TextInput
@@ -90,38 +81,26 @@ function Register ({navigation}) {
                     maxLength={10}
                 />        
             </View>
-             {/* ADDRESS */}
-            
-            <KeyboardAvoidingView
-                behavior ={Platform.OS==='android'? 'padding':null}
-            >
-            <View style={styles.inputView}>
-                <FontAwesome style = {styles.UserIcon} name="address-book-o" size={24} color="gray" />
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="Address"
-                    placeholderTextColor="gray"
-                />        
-            </View>
             </KeyboardAvoidingView>
             {/* LOGIN */}
             <BT_Login navigation={navigation}/>
-
+            {/* FOGOT */}
+            <TouchableOpacity>
+                <Text style={styles.forgot_button}>Thanks for your information (づ￣ 3￣)づ</Text>
+            </TouchableOpacity>
         </View>
     );
 
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor:"#fff",
+        
+        backgroundColor:"white",
         alignItems: "center",
         justifyContent: "center",
     },
     Logocontainer: {
-        
         backgroundColor: 'pink',
-        //marginTop: 50,
         marginBottom:50,
         justifyContent: "center",
         alignItems: "center",
@@ -135,10 +114,11 @@ const styles = StyleSheet.create({
       },
     forgot_button: {
         height: 30,
-       // marginBottom: 30,
+        marginTop : 30,
+        marginBottom: 100,
+
       },
     inputView: {
-        
         flexDirection: 'row',
         backgroundColor: "#FFC0CB",
         borderRadius: 30,
@@ -162,6 +142,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
       },
     PassinputView: {
+        
         flexDirection:"row",
         backgroundColor: "#FFC0CB",
         borderRadius: 30,
