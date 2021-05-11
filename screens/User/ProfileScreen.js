@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Container} from 'native-base'
 import {
   View,
   SafeAreaView,
   StyleSheet,
- ScrollView,
+  ScrollView,
   TouchableOpacity,
   Alert,
+  Image
 } from "react-native";
 import {
   Title,
@@ -58,6 +60,7 @@ const ProfileScreen = (prop) => {
   const [email, setEmail] = useState();
   const [address, setAddress] = useState();
   const [image, setImage] = useState();
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async () => {
@@ -86,6 +89,7 @@ const ProfileScreen = (prop) => {
           setEmail(res.data.email);
           setAddress(res.data.address);
           setPhone(res.data.phone);
+          setLoading(false)
         })
         .catch((err) => {
           console.log(err.response.data);
@@ -107,101 +111,121 @@ const ProfileScreen = (prop) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.user_edit}>
-          <TouchableOpacity
-            onPress={() => {
-              prop.navigation.dangerouslyGetParent().setOptions({
-                tabBarVisible: false,
-              });
-              prop.navigation.navigate("EditProfileScreen");
+    <>
+      {loading == false ? (
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <View style={styles.user_edit}>
+              <TouchableOpacity
+                onPress={() => {
+                  prop.navigation.dangerouslyGetParent().setOptions({
+                    tabBarVisible: false,
+                  });
+                  prop.navigation.navigate("EditProfileScreen");
+                }}
+              >
+                <FontAwesome5 name="user-edit" size={22} color="black" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.avatarInfo}>
+              <TouchableOpacity onPress={pickImage}>
+                <Avatar.Image
+                  source={{
+                    uri: image
+                      ? image
+                      : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620296815/Linh/avatar_sokxzf.jpg",
+                  }}
+                  size={150}
+                />
+              </TouchableOpacity>
+
+              <Title style={styles.title}>{username}</Title>
+            </View>
+
+            <View style={styles.userInfoSection}>
+              <View style={styles.row}>
+                <Icon name="map-marker-radius" color="#777777" size={20} />
+                <Text style={{ color: "#777777", marginLeft: 20 }}>{address}</Text>
+              </View>
+              <View style={styles.row}>
+                <Icon name="phone" color="#777777" size={20} />
+                <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
+              </View>
+              <View style={styles.row}>
+                <Icon name="email" color="#777777" size={20} />
+                <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoBoxWrapper}>
+              <View
+                style={[
+                  styles.infoBox,
+                  {
+                    borderRightColor: "#dddddd",
+                    borderRightWidth: 1,
+                  },
+                ]}
+              >
+                <Title>2.000.000</Title>
+                <Caption>VND</Caption>
+              </View>
+              <View style={styles.infoBox}>
+                <Title>12</Title>
+                <Caption>Đơn hàng</Caption>
+              </View>
+            </View>
+
+            <View style={styles.menuWrapper}>
+              <TouchableRipple onPress={() => { }}>
+                <View style={styles.menuItem}>
+                  <Icon name="credit-card" color="#FF6347" size={25} />
+                  <Text style={styles.menuItemText}>Thanh toán</Text>
+                </View>
+              </TouchableRipple>
+              <TouchableRipple onPress={() => console.log("ok")}>
+                <View style={styles.menuItem}>
+                  <Icon name="share-outline" color="#FF6347" size={25} />
+                  <Text style={styles.menuItemText}>Chia sẻ ứng dụng</Text>
+                </View>
+              </TouchableRipple>
+              <TouchableRipple onPress={() => { }}>
+                <View style={styles.menuItem}>
+                  <Icon name="account-check-outline" color="#FF6347" size={25} />
+                  <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
+                </View>
+              </TouchableRipple>
+              <TouchableRipple
+                onPress={() => {
+                  prop.navigation.navigate("Login");
+                }}
+              >
+                <View style={styles.menuItem}>
+                  <AntDesign name="logout" size={25} color="#FF6347" />
+                  <Text style={styles.menuItemText}>Đăng xuất</Text>
+                </View>
+              </TouchableRipple>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      ) : (
+        //Loading 
+        <Container
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require('../../assets/loading.gif')}
+            style={{
+              width: 300,
+              height: 100
             }}
-          >
-            <FontAwesome5 name="user-edit" size={22} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.avatarInfo}>
-          <TouchableOpacity onPress={pickImage}>
-            <Avatar.Image
-              source={{
-                uri: image
-                  ? image
-                  : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620296815/Linh/avatar_sokxzf.jpg",
-              }}
-              size={150}
-            />
-          </TouchableOpacity>
-
-          <Title style={styles.title}>{username}</Title>
-        </View>
-
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Icon name="map-marker-radius" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>{address}</Text>
-          </View>
-          <View style={styles.row}>
-            <Icon name="phone" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
-          </View>
-          <View style={styles.row}>
-            <Icon name="email" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
-          </View>
-        </View>
-
-        <View style={styles.infoBoxWrapper}>
-          <View
-            style={[
-              styles.infoBox,
-              {
-                borderRightColor: "#dddddd",
-                borderRightWidth: 1,
-              },
-            ]}
-          >
-            <Title>2.000.000</Title>
-            <Caption>VND</Caption>
-          </View>
-          <View style={styles.infoBox}>
-            <Title>12</Title>
-            <Caption>Đơn hàng</Caption>
-          </View>
-        </View>
-
-        <View style={styles.menuWrapper}>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.menuItem}>
-              <Icon name="credit-card" color="#FF6347" size={25} />
-              <Text style={styles.menuItemText}>Thanh toán</Text>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => console.log("ok")}>
-            <View style={styles.menuItem}>
-              <Icon name="share-outline" color="#FF6347" size={25} />
-              <Text style={styles.menuItemText}>Chia sẻ ứng dụng</Text>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.menuItem}>
-              <Icon name="account-check-outline" color="#FF6347" size={25} />
-              <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
-            </View>
-          </TouchableRipple>
-          <TouchableRipple
-            onPress={() => {
-              prop.navigation.navigate("Login");
-            }}
-          >
-            <View style={styles.menuItem}>
-              <AntDesign name="logout" size={25} color="#FF6347" />
-              <Text style={styles.menuItemText}>Đăng xuất</Text>
-            </View>
-          </TouchableRipple>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+          />
+        </Container>
+      )}
+    </>
   );
 };
 

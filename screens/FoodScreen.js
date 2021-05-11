@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   ProgressViewIOSComponent,
+  Image
 } from "react-native";
 import { Button, Container, Text } from "native-base";
 import ListFood from "../components/food/ListFood";
@@ -19,11 +20,13 @@ const FoodScreen = ({ navigation }) => {
   const [foods, setFoods] = useState();
   const [focus, setFocus] = useState(false);
   const [foodName, setFoodName] = useState();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     console.log("connect to api food");
     Axios.get("https://food-order-app12.herokuapp.com/api/foods")
       .then((res) => {
         setFoods(res.data);
+        setLoading(false)
       })
       .catch((err) => console.error(err));
   }, []);
@@ -42,22 +45,42 @@ const FoodScreen = ({ navigation }) => {
   }
   console.log("render foodScreen");
   return (
-    <Container>
-      <HeaderSearch isFocus={isFocus} foodName={getFoodName} />
+    <>
+      {loading == false ? (
+        <Container>
+          <HeaderSearch isFocus={isFocus} foodName={getFoodName} />
 
-      {focus ? (
-        <SearchListFood
-          data={getFoodByName(foodName)}
-          navigation={navigation}
-        />
+          {focus ? (
+            <SearchListFood
+              data={getFoodByName(foodName)}
+              navigation={navigation}
+            />
+          ) : (
+            <ScrollView style={{ backgroundColor: "white" }}>
+              <Banner />
+              <ListCategory navigation={navigation} />
+              <ListFood data={foods} navigation={navigation} />
+            </ScrollView>
+          )}
+        </Container>
       ) : (
-        <ScrollView style={{ backgroundColor: "white" }}>
-          <Banner />
-          <ListCategory navigation={navigation} />
-          <ListFood data={foods} navigation={navigation} />
-        </ScrollView>
+        //Loading 
+        <Container
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require('../assets/loading.gif')}
+            style={{
+              width: 300,
+              height: 100
+            }}
+          />
+        </Container>
       )}
-    </Container>
+    </>
   );
 };
 export default FoodScreen;
