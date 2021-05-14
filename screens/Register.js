@@ -8,6 +8,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Text,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -51,114 +53,120 @@ function Register({ navigation }) {
     }
   };
   return (
-    <View style={styles.container}>
-      {/* LOGO  */}
-      <View style={styles.Logocontainer}>
-        <Image style={styles.logo} source={require("../assets/logo.png")} />
-      </View>
-      {/* USERNAME */}
-      <View style={styles.inputView}>
-        <Feather style={styles.UserIcon} name="user" size={24} color="gray" />
-        <TextInput
-          value={username}
-          style={styles.TextInput}
-          placeholder="Tên tài khoản"
-          placeholderTextColor="gray"
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View>
-      {/* PASSWORD */}
-      <View style={styles.PassinputView}>
-        <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
-        <TextInput
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-          style={styles.PassTextInput}
-          placeholder="Mật khẩu"
-          placeholderTextColor="gray"
-          secureTextEntry={focus ? true : false}
-        />
-        {!focus ? (
-          <Feather
-            name="eye-off"
-            style={styles.eyeIcon}
-            size={24}
-            color="gray"
-            onPress={() => setFocus(true)}
-          />
-        ) : (
-          <FontAwesome
-            style={styles.eyeIcon}
-            name="eye"
-            size={24}
-            color="gray"
-            onPress={() => {
-              setFocus(false);
-            }}
-          />
-        )}
-      </View>
-      {/* REPASSWORD */}
-      <View style={styles.PassinputView}>
-        <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
-        <TextInput
-          value={repassword}
-          onChangeText={(text) => setRepassword(text)}
-          style={styles.PassTextInput}
-          placeholder="Nhập lại mật khẩu"
-          placeholderTextColor="gray"
-          secureTextEntry={focus ? true : false}
-        />
-        {!focus ? (
-          <Feather
-            name="eye-off"
-            style={styles.eyeIcon}
-            size={24}
-            color="gray"
-            onPress={() => setFocus(true)}
-          />
-        ) : (
-          <FontAwesome
-            style={styles.eyeIcon}
-            name="eye"
-            size={24}
-            color="gray"
-            onPress={() => {
-              setFocus(false);
-            }}
-          />
-        )}
-      </View>
-
-      {/* SDT */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "android" ? "padding" : null}
-      >
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        {/* LOGO  */}
+        <View style={styles.Logocontainer}>
+          <Image style={styles.logo} source={require("../assets/logo.png")} />
+        </View>
+        {/* USERNAME */}
         <View style={styles.inputView}>
-          <Feather
-            style={styles.UserIcon}
-            name="phone-call"
-            size={24}
-            color="gray"
-          />
+          <Feather style={styles.UserIcon} name="user" size={24} color="gray" />
           <TextInput
-            value={phone}
-            onChangeText={(number) => setPhone(number)}
+            value={username}
             style={styles.TextInput}
-            placeholder="Số điện thoại"
+            placeholder="Tên tài khoản"
             placeholderTextColor="gray"
-            keyboardType="number-pad"
-            maxLength={10}
+            onChangeText={(text) => setUsername(text)}
           />
         </View>
-      </KeyboardAvoidingView>
-      {/* Register*/}
-      <BT_Register onPress={handleRegister} />
-      {/* THANKS */}
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Thanks for your information </Text>
-      </TouchableOpacity>
-    </View>
+        {/* PASSWORD */}
+        <View style={styles.PassinputView}>
+          <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
+          <TextInput
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            style={styles.PassTextInput}
+            placeholder="Mật khẩu"
+            placeholderTextColor="gray"
+            secureTextEntry={focus ? true : false}
+          />
+          {!focus ? (
+            <Feather
+              name="eye-off"
+              style={styles.eyeIcon}
+              size={24}
+              color="gray"
+              onPress={() => setFocus(true)}
+            />
+          ) : (
+            <FontAwesome
+              style={styles.eyeIcon}
+              name="eye"
+              size={24}
+              color="gray"
+              onPress={() => {
+                setFocus(false);
+              }}
+            />
+          )}
+        </View>
+        {/* REPASSWORD */}
+        <View style={styles.PassinputView}>
+          <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
+          <TextInput
+            value={repassword}
+            onChangeText={(text) => setRepassword(text)}
+            style={styles.PassTextInput}
+            placeholder="Nhập lại mật khẩu"
+            placeholderTextColor="gray"
+            secureTextEntry={focus ? true : false}
+          />
+          {!focus ? (
+            <Feather
+              name="eye-off"
+              style={styles.eyeIcon}
+              size={24}
+              color="gray"
+              onPress={() => setFocus(true)}
+            />
+          ) : (
+            <FontAwesome
+              style={styles.eyeIcon}
+              name="eye"
+              size={24}
+              color="gray"
+              onPress={() => {
+                setFocus(false);
+              }}
+            />
+          )}
+        </View>
+
+        {/* SDT */}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "android" ? "padding" : null}
+        >
+          <View style={styles.inputView}>
+            <Feather
+              style={styles.UserIcon}
+              name="phone-call"
+              size={24}
+              color="gray"
+            />
+            <TextInput
+              value={phone}
+              onChangeText={(number) => setPhone(number)}
+              style={styles.TextInput}
+              placeholder="Số điện thoại"
+              placeholderTextColor="gray"
+              keyboardType="number-pad"
+              maxLength={10}
+            />
+          </View>
+        </KeyboardAvoidingView>
+        {/* Register*/}
+        <BT_Register onPress={handleRegister} />
+        {/* THANKS */}
+        <TouchableOpacity>
+          <Text style={styles.forgot_button}>Thanks for your information </Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 const styles = StyleSheet.create({
