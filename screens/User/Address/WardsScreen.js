@@ -15,7 +15,9 @@ import Axios from "axios";
 const WardsScreen = ({ route, navigation }) => {
   const [wards, setWards] = useState([]);
   useEffect(() => {
-    setWards(route.params?.wards);
+    if (route.params) {
+      setWards(route.params.wards);
+    }
   }, []);
 
   return (

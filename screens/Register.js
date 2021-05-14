@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Image, TextInput, Alert, KeyboardAvoidingView, TouchableOpacity ,Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TextInput,
+  Alert,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import BT_Register from "./ClassButton/BT_Resigter";
@@ -123,8 +132,8 @@ function Register({ navigation }) {
 
       {/* SDT */}
       <KeyboardAvoidingView
-                behavior ={Platform.OS==='android'? 'padding':null}
-            >
+        behavior={Platform.OS === "android" ? "padding" : null}
+      >
         <View style={styles.inputView}>
           <Feather
             style={styles.UserIcon}
@@ -147,20 +156,18 @@ function Register({ navigation }) {
       <BT_Register onPress={handleRegister} />
       {/* THANKS */}
       <TouchableOpacity>
-                <Text style={styles.forgot_button}>Thanks for your information </Text>
+        <Text style={styles.forgot_button}>Thanks for your information </Text>
       </TouchableOpacity>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
   Logocontainer: {
-    
     backgroundColor: "pink",
     marginTop: 0,
     marginBottom: 50,
@@ -172,10 +179,10 @@ const styles = StyleSheet.create({
     height: 300,
   },
   forgot_button: {
-    color: 'gray',
+    color: "gray",
     fontSize: 14,
     height: 30,
-    marginTop : 30,
+    marginTop: 30,
     marginBottom: 60,
     // marginBottom: 30,
   },

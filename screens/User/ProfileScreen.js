@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Container} from 'native-base'
+import { Container } from "native-base";
 import {
   View,
   SafeAreaView,
@@ -8,7 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  Image
+  Image,
 } from "react-native";
 import {
   Title,
@@ -33,7 +33,7 @@ const ProfileScreen = (prop) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
     });
-
+    //Update Avatar
     if (!result.cancelled) {
       setImage(result.uri);
       const token = await AsyncStorage.getItem("token");
@@ -60,14 +60,13 @@ const ProfileScreen = (prop) => {
   const [email, setEmail] = useState();
   const [address, setAddress] = useState();
   const [image, setImage] = useState();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("Xin lỗi chúng tôi không được phép truy cập vào thư viện");
         }
@@ -89,7 +88,7 @@ const ProfileScreen = (prop) => {
           setEmail(res.data.email);
           setAddress(res.data.address);
           setPhone(res.data.phone);
-          setLoading(false)
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err.response.data);
@@ -118,10 +117,10 @@ const ProfileScreen = (prop) => {
             <View style={styles.user_edit}>
               <TouchableOpacity
                 onPress={() => {
+                  prop.navigation.navigate("EditProfileScreen");
                   prop.navigation.dangerouslyGetParent().setOptions({
                     tabBarVisible: false,
                   });
-                  prop.navigation.navigate("EditProfileScreen");
                 }}
               >
                 <FontAwesome5 name="user-edit" size={22} color="black" />
@@ -145,15 +144,21 @@ const ProfileScreen = (prop) => {
             <View style={styles.userInfoSection}>
               <View style={styles.row}>
                 <Icon name="map-marker-radius" color="#777777" size={20} />
-                <Text style={{ color: "#777777", marginLeft: 20 }}>{address}</Text>
+                <Text style={{ color: "#777777", marginLeft: 20 }}>
+                  {address}
+                </Text>
               </View>
               <View style={styles.row}>
                 <Icon name="phone" color="#777777" size={20} />
-                <Text style={{ color: "#777777", marginLeft: 20 }}>{phone}</Text>
+                <Text style={{ color: "#777777", marginLeft: 20 }}>
+                  {phone}
+                </Text>
               </View>
               <View style={styles.row}>
                 <Icon name="email" color="#777777" size={20} />
-                <Text style={{ color: "#777777", marginLeft: 20 }}>{email}</Text>
+                <Text style={{ color: "#777777", marginLeft: 20 }}>
+                  {email}
+                </Text>
               </View>
             </View>
 
@@ -177,7 +182,7 @@ const ProfileScreen = (prop) => {
             </View>
 
             <View style={styles.menuWrapper}>
-              <TouchableRipple onPress={() => { }}>
+              <TouchableRipple onPress={() => {}}>
                 <View style={styles.menuItem}>
                   <Icon name="credit-card" color="#FF6347" size={25} />
                   <Text style={styles.menuItemText}>Thanh toán</Text>
@@ -189,9 +194,13 @@ const ProfileScreen = (prop) => {
                   <Text style={styles.menuItemText}>Chia sẻ ứng dụng</Text>
                 </View>
               </TouchableRipple>
-              <TouchableRipple onPress={() => { }}>
+              <TouchableRipple onPress={() => {}}>
                 <View style={styles.menuItem}>
-                  <Icon name="account-check-outline" color="#FF6347" size={25} />
+                  <Icon
+                    name="account-check-outline"
+                    color="#FF6347"
+                    size={25}
+                  />
                   <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
                 </View>
               </TouchableRipple>
@@ -209,7 +218,7 @@ const ProfileScreen = (prop) => {
           </ScrollView>
         </SafeAreaView>
       ) : (
-        //Loading 
+        //Loading
         <Container
           style={{
             alignItems: "center",
@@ -217,10 +226,10 @@ const ProfileScreen = (prop) => {
           }}
         >
           <Image
-            source={require('../../assets/loading.gif')}
+            source={require("../../assets/loading.gif")}
             style={{
               width: 300,
-              height: 100
+              height: 100,
             }}
           />
         </Container>

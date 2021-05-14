@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,8 +7,7 @@ import {
   TextInput,
   StyleSheet,
   Dimensions,
-  KeyboardAvoidingView,
-  Platform,
+  Alert,
 } from "react-native";
 import { Avatar, RadioButton } from "react-native-paper";
 import {
@@ -17,45 +16,181 @@ import {
   AntDesign,
   Feather,
 } from "@expo/vector-icons";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
+import Axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 const EditProfileScreen = (prop) => {
-  const [checked, setChecked] = React.useState("first");
+  //Info Detail User
+  const [token, setToken] = useState();
+  const [userID, setUserID] = useState();
+  const [username, setUsername] = useState();
+  const [image, setImage] = useState();
+  const [imageBackground, setImageBackground] = useState();
+  const [fullname, setFullname] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [sex, setSex] = React.useState("male");
+  const [address, setAddress] = useState();
+  const [birthday, setBirthday] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const getUser = async () => {
+    const token = await AsyncStorage.getItem("token");
+    const userID = await AsyncStorage.getItem("userID");
+    return { token, userID };
+  };
+  useEffect(() => {
+    getUser().then((user) => {
+      setToken(user.token);
+      setUserID(user.userID);
+      console.log({ userID });
+      const apiUrl = `https://food-order-app12.herokuapp.com/api/users/${user.userID}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      Axios.get(apiUrl, config)
+        .then((res) => {
+          setImage(res.data.image);
+          setImageBackground(res.data.imageBackground);
+          setUsername(res.data.username);
+          setFullname(res.data.fullname);
+          setEmail(res.data.email);
+          setPhone(res.data.phone);
+          setSex(res.data.sex);
+          setAddress(res.data.address);
+          setBirthday(res.data.birthday);
+
+          console.log(res.data);
+        })
+        .catch((err) => console.log("loi"));
+    });
+  }, []);
+
+  const updateAvatar = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+    });
+    //Update Avatar
+    if (!result.cancelled) {
+      setImage(result.uri);
+      let apiUrl = `https://food-order-app12.herokuapp.com/api/users/avatar/${userID}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      let data = new FormData();
+      data.append("image", {
+        uri: result.uri,
+        type: "image/png",
+        name: "image.jpg",
+      });
+      Axios.put(apiUrl, data, config)
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err.response.data));
+    }
+  };
+
+  const updateImageBackground = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+    });
+    //Update Image Background
+    if (!result.cancelled) {
+      setImageBackground(result.uri);
+      let apiUrl = `https://food-order-app12.herokuapp.com/api/users/imageBackground/${userID}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      let data = new FormData();
+      data.append("image", {
+        uri: result.uri,
+        type: "image/png",
+        name: "image.jpg",
+      });
+      Axios.put(apiUrl, data, config)
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err.response.data));
+    }
+  };
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
+  const getMonthFromString = (mon) => {
+    var d = Date.parse(mon + "1, 2012");
+    if (!isNaN(d)) {
+      return new Date(d).getMonth() + 1;
+    }
+    return -1;
+  };
   const handleConfirm = (date) => {
     console.log("A date has been picked: ", date);
+    const parts = date.toString().split(/[- :]/);
+    const day = parts[2];
+    const month = getMonthFromString(parts[1]);
+    const year = parts[3];
+    const dateFormat = `${day}/${month}/${year}`;
+
+    setBirthday(dateFormat);
     hideDatePicker();
+  };
+
+  const updateUserInfo = () => {
+    const apiUrl = `https://food-order-app12.herokuapp.com/api/users/userdetail/${userID}`;
+    const userInfo = {
+      fullname: fullname,
+      email: email,
+      phone: phone,
+      sex: sex,
+      address: address,
+      birthday: birthday,
+    };
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    Axios.post(apiUrl, userInfo, config)
+      .then((res) => Alert.alert("\n", "Cập nhật thông tin thành công"))
+      .catch((err) => console.log(err));
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarInfo}>
-        <ImageBackground
-          source={{
-            uri:
-              "https://res.cloudinary.com/hoquanglinh/image/upload/v1620405345/Linh/pngtree-creative-minimalist-peach-flower-beautiful-background-synthesis-image_229506_mp96ei.jpg",
-          }}
-          style={styles.backgroundImage}
-        />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={updateImageBackground}>
+          <ImageBackground
+            source={{
+              uri: imageBackground
+                ? imageBackground
+                : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620405345/Linh/pngtree-creative-minimalist-peach-flower-beautiful-background-synthesis-image_229506_mp96ei.jpg",
+            }}
+            style={styles.backgroundImage}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={updateAvatar}>
           <Avatar.Image
             source={{
-              uri:
-                "https://res.cloudinary.com/hoquanglinh/image/upload/v1620296815/Linh/avatar_sokxzf.jpg",
+              uri: image
+                ? image
+                : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620296815/Linh/avatar_sokxzf.jpg",
             }}
-            size={120}
+            size={130}
             style={styles.avatarImage}
           />
         </TouchableOpacity>
-        <Text style={styles.username}>Linh Hồ</Text>
+        <Text style={styles.username}>{username}</Text>
       </View>
 
       <View style={styles.row}>
@@ -65,7 +200,12 @@ const EditProfileScreen = (prop) => {
           size={24}
           color="black"
         />
-        <TextInput style={styles.text} placeholder="Họ và tên" />
+        <TextInput
+          style={styles.text}
+          placeholder="Họ và tên"
+          value={fullname}
+          onChangeText={(text) => setFullname(text)}
+        />
       </View>
       <View style={styles.row}>
         <MaterialCommunityIcons
@@ -78,6 +218,8 @@ const EditProfileScreen = (prop) => {
           style={styles.text}
           placeholder="Email"
           keyboardType="email-address"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
       </View>
       <View style={styles.row}>
@@ -86,6 +228,8 @@ const EditProfileScreen = (prop) => {
           style={styles.text}
           placeholder="Số điện thoại"
           keyboardType="numeric"
+          value={phone}
+          onChangeText={(phone) => setPhone(phone)}
         />
       </View>
 
@@ -107,23 +251,23 @@ const EditProfileScreen = (prop) => {
         >
           <RadioButton
             color="#42aaf5"
-            value="first"
-            status={checked === "first" ? "checked" : "unchecked"}
-            onPress={() => setChecked("first")}
+            value="male"
+            status={sex === "male" ? "checked" : "unchecked"}
+            onPress={() => setSex("male")}
           />
           <Text style={styles.text}>Nam</Text>
           <RadioButton
             value="second"
             color="#42aaf5"
-            status={checked === "second" ? "checked" : "unchecked"}
-            onPress={() => setChecked("second")}
+            status={sex === "female" ? "checked" : "unchecked"}
+            onPress={() => setSex("female")}
           />
           <Text style={styles.text}>Nữ</Text>
           <RadioButton
-            value="third"
+            value="different"
             color="#42aaf5"
-            status={checked === "third" ? "checked" : "unchecked"}
-            onPress={() => setChecked("third")}
+            status={sex === "different" ? "checked" : "unchecked"}
+            onPress={() => setSex("different")}
           />
           <Text style={styles.text}>Khác</Text>
         </View>
@@ -141,25 +285,33 @@ const EditProfileScreen = (prop) => {
             color="black"
             style={styles.icon}
           />
-          <Text style={[styles.text, { color: "#877f7f" }]}>Địa chỉ</Text>
+          <Text style={[styles.text, { color: "#877f7f" }]}>{address}</Text>
         </View>
       </TouchableOpacity>
 
-      <View style={styles.row}>
-        <TouchableOpacity style={styles.icon} onPress={showDatePicker}>
-          <AntDesign name="calendar" size={24} color="black" />
-        </TouchableOpacity>
-        <TextInput style={styles.text} placeholder="Ngày sinh" />
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-          display="spinner"
-        />
-      </View>
+      <TouchableOpacity style={styles.icon} onPress={showDatePicker}>
+        <View style={styles.row}>
+          <AntDesign
+            name="calendar"
+            size={24}
+            color="black"
+            style={{ marginRight: 10 }}
+          />
+          <Text style={[styles.text]}>
+            {birthday ? birthday.toString() : "Ngày sinh"}
+          </Text>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            display="spinner"
+          />
+        </View>
+      </TouchableOpacity>
+
       <View style={styles.buttonContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={updateUserInfo}>
           <Text style={styles.buttonText}>Cập nhật</Text>
         </TouchableOpacity>
       </View>
@@ -167,7 +319,7 @@ const EditProfileScreen = (prop) => {
   );
 };
 const styles = StyleSheet.create({
-  container: {},
+  container: { backgroundColor: "#fff", flex: 1 },
   username: {
     fontSize: 25,
     fontWeight: "bold",
@@ -180,9 +332,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 10,
     backgroundColor: "#039dfc",
-    width: width,
-    height: height / 4 + 10,
+    width: width - 20,
+    height: height / 4 + 30,
+    marginTop: 10,
     marginBottom: -60,
+
+    borderRadius: 50,
   },
 
   row: {

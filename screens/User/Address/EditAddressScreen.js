@@ -76,7 +76,9 @@ const EditAddressScreen = ({ route, navigation }) => {
         <Text style={styles.text}>Phường/Xã</Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("WardsScreen", { wards: route.params.wards });
+            navigation.navigate("WardsScreen", {
+              wards: route.params ? route.params.wards : "",
+            });
           }}
         >
           <View style={styles.content}>
