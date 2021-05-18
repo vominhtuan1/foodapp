@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { Avatar, RadioButton } from "react-native-paper";
 import {
@@ -170,155 +171,157 @@ const EditProfileScreen = (prop) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.avatarInfo}>
-          <TouchableOpacity onPress={updateImageBackground}>
-            <ImageBackground
-              source={{
-                uri: imageBackground
-                  ? imageBackground
-                  : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620405345/Linh/pngtree-creative-minimalist-peach-flower-beautiful-background-synthesis-image_229506_mp96ei.jpg",
-              }}
-              style={styles.backgroundImage}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={updateAvatar}>
-            <Avatar.Image
-              source={{
-                uri: image
-                  ? image
-                  : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620296815/Linh/avatar_sokxzf.jpg",
-              }}
-              size={130}
-              style={styles.avatarImage}
-            />
-          </TouchableOpacity>
-          <Text style={styles.username}>{username}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <FontAwesome
-            style={styles.icon}
-            name="user-o"
-            size={24}
-            color="black"
-          />
-          <TextInput
-            style={styles.text}
-            placeholder="Họ và tên"
-            value={fullname}
-            onChangeText={(text) => setFullname(text)}
-          />
-        </View>
-        <View style={styles.row}>
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name="email-outline"
-            size={24}
-            color="black"
-          />
-          <TextInput
-            style={styles.text}
-            placeholder="Email"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
-        <View style={styles.row}>
-          <Feather name="phone" size={24} color="black" style={styles.icon} />
-          <TextInput
-            style={styles.text}
-            placeholder="Số điện thoại"
-            keyboardType="numeric"
-            value={phone}
-            onChangeText={(phone) => setPhone(phone)}
-          />
-        </View>
-
-        <View style={styles.row}>
-          <FontAwesome
-            style={styles.icon}
-            name="intersex"
-            size={24}
-            color="black"
-          />
-          <Text style={styles.text}>Giới tính</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              flex: 1,
-            }}
-          >
-            <RadioButton
-              color="#42aaf5"
-              value="male"
-              status={sex === "male" ? "checked" : "unchecked"}
-              onPress={() => setSex("male")}
-            />
-            <Text style={styles.text}>Nam</Text>
-            <RadioButton
-              value="second"
-              color="#42aaf5"
-              status={sex === "female" ? "checked" : "unchecked"}
-              onPress={() => setSex("female")}
-            />
-            <Text style={styles.text}>Nữ</Text>
-            <RadioButton
-              value="different"
-              color="#42aaf5"
-              status={sex === "different" ? "checked" : "unchecked"}
-              onPress={() => setSex("different")}
-            />
-            <Text style={styles.text}>Khác</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.avatarInfo}>
+            <TouchableOpacity onPress={updateImageBackground}>
+              <ImageBackground
+                source={{
+                  uri: imageBackground
+                    ? imageBackground
+                    : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620405345/Linh/pngtree-creative-minimalist-peach-flower-beautiful-background-synthesis-image_229506_mp96ei.jpg",
+                }}
+                style={styles.backgroundImage}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={updateAvatar}>
+              <Avatar.Image
+                source={{
+                  uri: image
+                    ? image
+                    : "https://res.cloudinary.com/hoquanglinh/image/upload/v1620296815/Linh/avatar_sokxzf.jpg",
+                }}
+                size={130}
+                style={styles.avatarImage}
+              />
+            </TouchableOpacity>
+            <Text style={styles.username}>{username}</Text>
           </View>
-        </View>
 
-        <TouchableOpacity
-          onPress={() => {
-            prop.navigation.navigate("EditAddressScreen");
-          }}
-        >
+          <View style={styles.row}>
+            <FontAwesome
+              style={styles.icon}
+              name="user-o"
+              size={24}
+              color="black"
+            />
+            <TextInput
+              style={styles.text}
+              placeholder="Họ và tên"
+              value={fullname}
+              onChangeText={(text) => setFullname(text)}
+            />
+          </View>
           <View style={styles.row}>
             <MaterialCommunityIcons
-              name="map-marker-outline"
-              size={24}
-              color="black"
               style={styles.icon}
-            />
-            <Text style={[styles.text, { color: "#877f7f" }]}>{address}</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.icon} onPress={showDatePicker}>
-          <View style={styles.row}>
-            <AntDesign
-              name="calendar"
+              name="email-outline"
               size={24}
               color="black"
-              style={{ marginRight: 10 }}
             />
-            <Text style={[styles.text]}>
-              {birthday ? birthday.toString() : "Ngày sinh"}
-            </Text>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-              display="spinner"
+            <TextInput
+              style={styles.text}
+              placeholder="Email"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
-        </TouchableOpacity>
+          <View style={styles.row}>
+            <Feather name="phone" size={24} color="black" style={styles.icon} />
+            <TextInput
+              style={styles.text}
+              placeholder="Số điện thoại"
+              keyboardType="numeric"
+              value={phone}
+              onChangeText={(phone) => setPhone(phone)}
+            />
+          </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={updateUserInfo}>
-            <Text style={styles.buttonText}>Cập nhật</Text>
+          <View style={styles.row}>
+            <FontAwesome
+              style={styles.icon}
+              name="intersex"
+              size={24}
+              color="black"
+            />
+            <Text style={styles.text}>Giới tính</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                flex: 1,
+              }}
+            >
+              <RadioButton
+                color="#42aaf5"
+                value="male"
+                status={sex === "male" ? "checked" : "unchecked"}
+                onPress={() => setSex("male")}
+              />
+              <Text style={styles.text}>Nam</Text>
+              <RadioButton
+                value="second"
+                color="#42aaf5"
+                status={sex === "female" ? "checked" : "unchecked"}
+                onPress={() => setSex("female")}
+              />
+              <Text style={styles.text}>Nữ</Text>
+              <RadioButton
+                value="different"
+                color="#42aaf5"
+                status={sex === "different" ? "checked" : "unchecked"}
+                onPress={() => setSex("different")}
+              />
+              <Text style={styles.text}>Khác</Text>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              prop.navigation.navigate("EditAddressScreen");
+            }}
+          >
+            <View style={styles.row}>
+              <MaterialCommunityIcons
+                name="map-marker-outline"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+              <Text style={[styles.text]}>{address}</Text>
+            </View>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.icon} onPress={showDatePicker}>
+            <View style={styles.row}>
+              <AntDesign
+                name="calendar"
+                size={24}
+                color="black"
+                style={{ marginRight: 10 }}
+              />
+              <Text style={[styles.text]}>
+                {birthday ? birthday.toString() : "Ngày sinh"}
+              </Text>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                display="spinner"
+              />
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={updateUserInfo}>
+              <Text style={styles.buttonText}>Cập nhật</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

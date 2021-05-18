@@ -36,7 +36,6 @@ const DistrictsScreen = ({ route, navigation }) => {
                 navigation.navigate("EditAddressScreen", {
                   district: district.name,
                   wards: district.ward,
-                  ward: "Nhập phường,xã",
                 });
               }}
             >

@@ -31,8 +31,6 @@ const ProvincesScreen = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("EditAddressScreen", {
                   province: value,
-                  district: "Điền quận, huyện",
-                  ward: "Nhập phường,xã",
                 });
               }}
             >

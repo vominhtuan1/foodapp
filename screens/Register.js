@@ -1,42 +1,55 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  TextInput,
-  Alert,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Text,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import BT_Register from "./ClassButton/BT_Resigter";
+import { StatusBar } from "expo-status-bar";
+import { View, Alert } from "react-native";
+import { Formik } from "formik";
+import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
+import {
+  StyledContainer,
+  InnerContainer,
+  PageLogo,
+  PageTitle,
+  Subtitle,
+  StyledFormArea,
+  LeftIcon,
+  StyledInputLabel,
+  StyledTextInput,
+  RightIcon,
+  StyledButton,
+  ButtonText,
+  Colors,
+  MsgBox,
+  Line,
+  ExtraView,
+  ExtraText,
+  TextLink,
+  TextLinkContent,
+} from "./../components/formStyles";
 
-function Register({ navigation }) {
-  const [focus, setFocus] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [repassword, setRepassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const handleRegister = () => {
+const { brand, darkLight } = Colors;
+const Register = () => {
+  const [hidePassword, setHidePassword] = useState(true);
+  const handleRegister = ({
+    username,
+    password,
+    confirmpassword,
+    phonenumber,
+  }) => {
+    console.log({ username, password, confirmpassword, phonenumber });
     if (!username) {
       Alert.alert("\n", "Vui lòng nhập tài khoản");
     } else if (!password) {
       Alert.alert("\n", "Vui long nhập mật khẩu");
-    } else if (password !== repassword) {
+    } else if (password !== confirmpassword) {
       Alert.alert("\n", "Mật khẩu không khớp");
-    } else if (!phone) {
+    } else if (!phonenumber) {
       Alert.alert("\n", "Vui lòng nhập số điện thoại");
     } else {
       axios
         .post("https://food-order-app12.herokuapp.com/api/users/register", {
           username,
           password,
-          phone,
+          phone: phonenumber,
           isAdmin: false,
         })
         .then((res) => {
@@ -53,191 +66,114 @@ function Register({ navigation }) {
     }
   };
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
-      <View style={styles.container}>
-        {/* LOGO  */}
-        <View style={styles.Logocontainer}>
-          <Image style={styles.logo} source={require("../assets/logo.png")} />
-        </View>
-        {/* USERNAME */}
-        <View style={styles.inputView}>
-          <Feather style={styles.UserIcon} name="user" size={24} color="gray" />
-          <TextInput
-            value={username}
-            style={styles.TextInput}
-            placeholder="Tên tài khoản"
-            placeholderTextColor="gray"
-            onChangeText={(text) => setUsername(text)}
-          />
-        </View>
-        {/* PASSWORD */}
-        <View style={styles.PassinputView}>
-          <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
-          <TextInput
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            style={styles.PassTextInput}
-            placeholder="Mật khẩu"
-            placeholderTextColor="gray"
-            secureTextEntry={focus ? true : false}
-          />
-          {!focus ? (
-            <Feather
-              name="eye-off"
-              style={styles.eyeIcon}
-              size={24}
-              color="gray"
-              onPress={() => setFocus(true)}
-            />
-          ) : (
-            <FontAwesome
-              style={styles.eyeIcon}
-              name="eye"
-              size={24}
-              color="gray"
-              onPress={() => {
-                setFocus(false);
-              }}
-            />
-          )}
-        </View>
-        {/* REPASSWORD */}
-        <View style={styles.PassinputView}>
-          <Feather style={styles.keyIcon} name="key" size={24} color="gray" />
-          <TextInput
-            value={repassword}
-            onChangeText={(text) => setRepassword(text)}
-            style={styles.PassTextInput}
-            placeholder="Nhập lại mật khẩu"
-            placeholderTextColor="gray"
-            secureTextEntry={focus ? true : false}
-          />
-          {!focus ? (
-            <Feather
-              name="eye-off"
-              style={styles.eyeIcon}
-              size={24}
-              color="gray"
-              onPress={() => setFocus(true)}
-            />
-          ) : (
-            <FontAwesome
-              style={styles.eyeIcon}
-              name="eye"
-              size={24}
-              color="gray"
-              onPress={() => {
-                setFocus(false);
-              }}
-            />
-          )}
-        </View>
+    <StyledContainer>
+      <InnerContainer>
+        <PageTitle> Food App</PageTitle>
+        <Subtitle>Đăng Ký</Subtitle>
 
-        {/* SDT */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "android" ? "padding" : null}
+        <Formik
+          initialValues={{
+            username: "",
+            password: "",
+            confirmpassword: "",
+            phonenumber: "",
+          }}
+          onSubmit={(values) => {
+            handleRegister(values);
+          }}
         >
-          <View style={styles.inputView}>
-            <Feather
-              style={styles.UserIcon}
-              name="phone-call"
-              size={24}
-              color="gray"
-            />
-            <TextInput
-              value={phone}
-              onChangeText={(number) => setPhone(number)}
-              style={styles.TextInput}
-              placeholder="Số điện thoại"
-              placeholderTextColor="gray"
-              keyboardType="number-pad"
-              maxLength={10}
-            />
-          </View>
-        </KeyboardAvoidingView>
-        {/* Register*/}
-        <BT_Register onPress={handleRegister} />
-        {/* THANKS */}
-        <TouchableOpacity>
-          <Text style={styles.forgot_button}>Thanks for your information </Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableWithoutFeedback>
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <StyledFormArea>
+              <MyTextInput
+                label="Tên đăng nhập"
+                icon="user"
+                placeholder="Tài khoản đăng nhập"
+                placeholderTextColor={darkLight}
+                onChangeText={handleChange("username")}
+                onBlur={handleBlur("username")}
+                value={values.username}
+              />
+
+              <MyTextInput
+                label="Mật khẩu"
+                icon="lock"
+                placeholder="* * * * * * * *"
+                placeholderTextColor={darkLight}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+                secureTextEntry={hidePassword}
+                isPassword={true}
+                hidePassword={hidePassword}
+                setHidePassword={setHidePassword}
+              />
+              <MyTextInput
+                label="Xác nhận mật khẩu"
+                icon="lock"
+                placeholder="* * * * * * * *"
+                placeholderTextColor={darkLight}
+                onChangeText={handleChange("confirmpassword")}
+                onBlur={handleBlur("confirmpassword")}
+                value={values.confirmpassword}
+                secureTextEntry={hidePassword}
+                isPassword={true}
+                hidePassword={hidePassword}
+                setHidePassword={setHidePassword}
+              />
+
+              <MyTextInput
+                label="Số điện thoại"
+                icon="phone"
+                placeholder="Số điện thoại liên lạc"
+                placeholderTextColor={darkLight}
+                onChangeText={handleChange("phonenumber")}
+                onBlur={handleBlur("phonenumber")}
+                value={values.phonenumber}
+              />
+              <MsgBox>...</MsgBox>
+              <StyledButton onPress={handleSubmit}>
+                <ButtonText>Đăng ký</ButtonText>
+              </StyledButton>
+              <Line />
+              <ExtraView>
+                <ExtraText>Bạn đã có tài khoản ? </ExtraText>
+                <TextLink>
+                  <TextLinkContent>Đăng nhập</TextLinkContent>
+                </TextLink>
+              </ExtraView>
+            </StyledFormArea>
+          )}
+        </Formik>
+      </InnerContainer>
+    </StyledContainer>
   );
-}
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  Logocontainer: {
-    backgroundColor: "pink",
-    marginTop: 0,
-    marginBottom: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logo: {
-    width: 400,
-    height: 300,
-  },
-  forgot_button: {
-    color: "gray",
-    fontSize: 14,
-    height: 30,
-    marginTop: 30,
-    marginBottom: 60,
-    // marginBottom: 30,
-  },
-  inputView: {
-    flexDirection: "row",
-    backgroundColor: "#FFC0CB",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  UserIcon: {
-    flex: 2,
-    padding: 10,
-  },
-  TextInput: {
-    height: 50,
-    flex: 6,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  PassinputView: {
-    flexDirection: "row",
-    backgroundColor: "#FFC0CB",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  keyIcon: {
-    flex: 2,
-    padding: 10,
-  },
-  eyeIcon: {
-    flex: 1,
-    padding: 10,
-  },
-  PassTextInput: {
-    height: 50,
-    flex: 4,
-    padding: 10,
-    alignItems: "center",
-  },
-});
+};
+
+const MyTextInput = ({
+  label,
+  icon,
+  isPassword,
+  hidePassword,
+  setHidePassword,
+  ...props
+}) => {
+  return (
+    <View>
+      <LeftIcon>
+        <Entypo name={icon} size={24} color={brand} />
+      </LeftIcon>
+      <StyledInputLabel>{label}</StyledInputLabel>
+      <StyledTextInput {...props} />
+      {isPassword && (
+        <RightIcon onPress={() => setHidePassword(!hidePassword)}>
+          <Entypo
+            name={hidePassword ? "eye-with-line" : "eye"}
+            size={24}
+            color={darkLight}
+          />
+        </RightIcon>
+      )}
+    </View>
+  );
+};
 export default Register;
