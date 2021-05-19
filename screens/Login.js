@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
 import { View, Alert } from "react-native";
 import { Formik } from "formik";
 import { Entypo } from "@expo/vector-icons";
