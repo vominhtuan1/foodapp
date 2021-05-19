@@ -1,10 +1,19 @@
 import React from "react";
 import { Text, View } from "react-native";
+import { SimpleLineIcons } from '@expo/vector-icons';
 const SettingScreen = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>This is Setting Screen Screen</Text>
+    <View style={styles.header}>
+      <Text>Product</Text>
     </View>
   );
 };
+const styles = StyleSheet.create({
+  header: {
+    flex: 5,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center" 
+  },
+})
 export default SettingScreen;
