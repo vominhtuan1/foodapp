@@ -17,7 +17,7 @@ const List = () => {
             
               <View style={styles.header}>
               
-                  <Text style={styles.bodyText}> Image</Text>
+                  <Text style={styles.bodyText}>Image</Text>
                   <Text style={styles.bodyText}>Name </Text>
                   <Text style={styles.bodyText}>Category </Text>
                   <Text style={styles.bodyText}>Price </Text>
