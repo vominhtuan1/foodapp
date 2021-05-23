@@ -3,13 +3,13 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 // create a component
-const BT_Categories = (props) => {
+const BT_Foods = () => {
   return (
     <View>
-      <TouchableOpacity style={styles.Btn} onPress={() => props.onPress()}>
+      <View style={styles.Btn} >
         <Ionicons name="add" size={24} color="black"  style={styles.iconBtn} />
-        <Text style={styles.Text}>Categories</Text>
-      </TouchableOpacity>
+        <Text style={styles.Text}>Foods</Text>
+      </View>
     </View>
   );
 };
@@ -17,7 +17,7 @@ const BT_Categories = (props) => {
 // define your styles
 const styles = StyleSheet.create({
     Text:{
-        flex:3,
+        flex:2
     },
     Btn: {
         width: 110,
@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
         flexDirection:'row',
     },
     iconBtn:{
-        marginLeft:1,
+        marginLeft:15,
         flex: 1,
     },
 });
 
 //make this component available to the app
-export default BT_Categories;
+export default BT_Foods;

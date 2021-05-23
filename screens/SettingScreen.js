@@ -1,12 +1,14 @@
 import React from "react";
-import { Text, View,StyleSheet, TextInput, ScrollView } from "react-native";
+import { Text, View,StyleSheet, TextInput, ScrollView,TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import BT_Order from './Products/bt_Order'
 import BT_search from './Products/bt_Seach';
 import BT_Products from './Products/bt_Products';
-import BT_Categories from './Products/bt_Category';
+import BT_Foods from './Products/bt.Food';
 import List from "./Products/listFood";
-const SettingScreen = () => {
+
+import { Ionicons } from '@expo/vector-icons';
+const SettingScreen = ({ navigation }) => {
   return (
     <View style={styles.page}>
       <View style={styles.header}>
@@ -14,8 +16,11 @@ const SettingScreen = () => {
         <View style={styles.header1}>
             <BT_Order/> 
             <BT_Products/>
-            <BT_Categories/>
-        </View>
+            <TouchableOpacity onPress={()=>navigation.navigate("AddToFood")}>
+            <BT_Foods  />
+            </TouchableOpacity>
+        </View> 
+
         
       </View>
       <View style={styles.seach}>
@@ -48,6 +53,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center" 
   },
+
+iconBtn:{
+    marginLeft:1,
+    flex: 1,
+},
   body: {
     flex: 6,
     justifyContent: "center",

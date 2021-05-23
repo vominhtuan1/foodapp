@@ -7,6 +7,7 @@ import { FontAwesome } from "@expo/vector-icons";
 //Screens
 import SettingScreen from "../screens/SettingScreen";
 
+
 import { Feather } from "@expo/vector-icons";
 
 //Stacks
@@ -14,6 +15,7 @@ import HomeStack from "./HomeNavigator";
 import CartNavigator from "./CartNavigator";
 import OrderNavigator from "./OrderNavigator";
 import UserStack from "./UserNavigator";
+import SettingStack from './SettingNavigator'
 
 import { View } from "native-base";
 import CartIcon from "../Shared/CartIcon";
@@ -68,7 +70,7 @@ const MyTab = () => {
       />
       <Tab.Screen
         name="Setting"
-        component={SettingScreen}
+        component={SettingStack}
         options={{
           tabBarLabel: "Setting",
           tabBarIcon: ({ focused, color, size }) => {
