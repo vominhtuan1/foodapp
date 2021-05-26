@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, TouchableWithoutFeedback,Keyboard } from "react-native";
 import { Formik } from "formik";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
@@ -76,64 +76,68 @@ const Login = ({ navigation }) => {
       });
   };
   return (
-    <StyledContainer>
-      <InnerContainer>
-        <PageLogo source={require("./../assets/logo1.png")} />
-        <PageTitle> Food App</PageTitle>
-        <Subtitle>Đăng nhập</Subtitle>
+    <TouchableWithoutFeedback
+      onPress={Keyboard.dismiss}
+    >
+      <StyledContainer>
+        <InnerContainer>
+          <PageLogo source={require("./../assets/logo1.png")} />
+          <PageTitle> Food App</PageTitle>
+          <Subtitle>Đăng nhập</Subtitle>
 
-        <Formik
-          initialValues={{ username: username, password: password }}
-          onSubmit={(values) => {
-            handleLogin(values);
-          }}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <StyledFormArea>
-              <MyTextInput
-                label="Tên đăng nhập"
-                icon="user"
-                placeholder="tài khoản đăng nhập"
-                placeholderTextColor={darkLight}
-                onChangeText={handleChange("username")}
-                onBlur={handleBlur("username")}
-                value={values.username}
-              />
+          <Formik
+            initialValues={{ username: username, password: password }}
+            onSubmit={(values) => {
+              handleLogin(values);
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values }) => (
+              <StyledFormArea>
+                <MyTextInput
+                  label="Tên đăng nhập"
+                  icon="user"
+                  placeholder="tài khoản đăng nhập"
+                  placeholderTextColor={darkLight}
+                  onChangeText={handleChange("username")}
+                  onBlur={handleBlur("username")}
+                  value={values.username}
+                />
 
-              <MyTextInput
-                label="Mật khẩu"
-                icon="lock"
-                placeholder="* * * * * * * *"
-                placeholderTextColor={darkLight}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                secureTextEntry={hidePassword}
-                isPassword={true}
-                hidePassword={hidePassword}
-                setHidePassword={setHidePassword}
-              />
-              <MsgBox>...</MsgBox>
-              <StyledButton onPress={handleSubmit}>
-                <ButtonText>Đăng nhập</ButtonText>
-              </StyledButton>
+                <MyTextInput
+                  label="Mật khẩu"
+                  icon="lock"
+                  placeholder="* * * * * * * *"
+                  placeholderTextColor={darkLight}
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                  secureTextEntry={hidePassword}
+                  isPassword={true}
+                  hidePassword={hidePassword}
+                  setHidePassword={setHidePassword}
+                />
+                <MsgBox>...</MsgBox>
+                <StyledButton onPress={handleSubmit}>
+                  <ButtonText>Đăng nhập</ButtonText>
+                </StyledButton>
 
-              <StyledButton
-                onPress={() => {
-                  navigation.navigate("Register");
-                }}
-              >
-                <ButtonText>Đăng Ký</ButtonText>
-              </StyledButton>
-              <Line />
-              <TextLink>
-                <TextLinkContent>Quên mật khẩu ?</TextLinkContent>
-              </TextLink>
-            </StyledFormArea>
-          )}
-        </Formik>
-      </InnerContainer>
-    </StyledContainer>
+                <StyledButton
+                  onPress={() => {
+                    navigation.navigate("Register");
+                  }}
+                >
+                  <ButtonText>Đăng Ký</ButtonText>
+                </StyledButton>
+                <Line />
+                <TextLink>
+                  <TextLinkContent>Quên mật khẩu ?</TextLinkContent>
+                </TextLink>
+              </StyledFormArea>
+            )}
+          </Formik>
+        </InnerContainer>
+      </StyledContainer>
+    </TouchableWithoutFeedback>
   );
 };
 

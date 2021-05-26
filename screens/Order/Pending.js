@@ -1,37 +1,99 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Image,
+  FlatList
 } from "react-native";
+import { Container } from 'native-base';
 import { SimpleLineIcons } from "@expo/vector-icons";
 import codeOrder from "../../data/codeOrder";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import axios from "axios";
+
+
+
 const Pending = () => {
+  const [orders, setOrders] = useState()
+  const [loading, setLoading] = useState(true)
+
+
+  const getUser = async () => {
+    const userID = await AsyncStorage.getItem("userID")
+    const token = await AsyncStorage.getItem("token")
+    return { userID, token }
+  }
+
+  useEffect(() => {
+    getUser().then((user) => {
+      const token = user.token
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      axios
+        .get("https://food-order-app12.herokuapp.com/api/orders", config)
+        .then((res) => {
+          setOrders(res.data),
+            setLoading(false)
+        })
+        .catch((err) => console.log(err))
+    })
+
+  }, [])
   return (
-    <View>
-      <ScrollView>
-        {codeOrder.map((item, index) => (
-          <View key={item.id} style={styles.container}>
-            <TouchableOpacity>
-              <View style={styles.header}>
-                <SimpleLineIcons
-                  style={styles.Icon}
-                  name="notebook"
-                  size={40}
-                  color="black"
-                />
-                <View style={styles.insize}>
-                  <Text style={styles.TextInput}>Mã ĐH: {item.code}</Text>
-                  <Text style={styles.TextInput}>Thành tiền: {item.cost}</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+    <>
+      {loading == false ? (
+        <View>
+          <ScrollView>
+            <FlatList
+              data={orders}
+              keyExtractor={item => item._id}
+              renderItem={(item) => {
+                return (
+                  <View style={styles.container}>
+                    <TouchableOpacity>
+                      <View style={styles.header}>
+                        <SimpleLineIcons
+                          style={styles.Icon}
+                          name="notebook"
+                          size={40}
+                          color="black"
+                        />
+                        <View style={styles.insize}>
+                          <Text style={styles.TextInput}>Mã ĐH: {item.item._id.substring(0,10)}</Text>
+                          <Text style={styles.TextInput}>Thành tiền: {item.item.totalPrice}</Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )
+              }}
+            />
+          </ScrollView>
+        </View>
+      ) : (
+        <Container
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require('../../assets/loading.gif')}
+            style={{
+              width: 300,
+              height: 100
+            }}
+          />
+        </Container>
+      )}
+    </>
   );
 };
 const styles = StyleSheet.create({

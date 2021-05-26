@@ -107,7 +107,7 @@ const Thankyou = (props) => {
             textAlign: "center",
           }}
         >
-          {confirm.order.address}
+          {confirm.address}
         </Text>
       </View>
       <View
