@@ -15,7 +15,7 @@ const SettingScreen = ({ navigation }) => {
         <Text style={styles.textinput}>Product</Text>
         <View style={styles.header1}>
             <BT_Order/> 
-            <BT_Products/>
+            <BT_Products onPress= {()=> navigation.navigate("AddProduct")}/>
             <TouchableOpacity onPress={()=>navigation.navigate("AddToFood")}>
             <BT_Foods  />
             </TouchableOpacity>

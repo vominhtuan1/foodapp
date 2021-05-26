@@ -11,12 +11,38 @@ import {
   SafeAreaView,
 } from "react-native";
 import MethodCheckout from "./MeThodCheckout";
+import axios from 'axios';
 
 import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 var { width, height } = Dimensions.get("window");
 
 const Checkout = (props) => {
+
+  const [userId,setUserId]=useState();
+  const [token,setToken]=useState();
+
+  const getUser = async () =>{
+    try{
+      const userID = await AsyncStorage.getItem("userID")
+      const Token = await AsyncStorage.getItem("token")
+
+      if (userID!=null && Token != null){
+        setUserId(userID)
+        setToken(Token)
+      }
+    } catch (e){
+      console.log(e)
+    }
+  }
+
+  const config ={
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [subPrice, setSubPrice] = useState();
   const [totalPrice, setTotalPrice] = useState();
   const [orderItems, setOrderItems] = useState();
@@ -27,6 +53,7 @@ const Checkout = (props) => {
     setOrderItems(props.cartItems);
     setSubPrice(props.route.params.total);
     setTotalPrice(props.route.params.total + 20000);
+    getUser();
 
     return () => {
       setOrderItems();
@@ -34,14 +61,19 @@ const Checkout = (props) => {
   }, []);
 
   const chechOut = () => {
-    let order = {
-      address,
-      phone,
-      totalPrice,
-      dateOrdered: Date.now(),
+    axios.post("https://food-order-app12.herokuapp.com/api/orders",{
       orderItems,
-    };
-    props.navigation.navigate("Thankyou", { order: order });
+      shippingAddrees: address,
+      user: userId
+    },config)
+      .then((res) => {
+        if (res.status == 200 || res.status == 201 ){
+          props.navigation.navigate("Thankyou", { address: address });
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   };
 
   return (
@@ -119,6 +151,7 @@ const mapStateToProps = (state) => {
     cartItems: cartItems,
   };
 };
+
 
 const styles = StyleSheet.create({
   addressContainer: {

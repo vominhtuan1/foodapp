@@ -4,8 +4,12 @@ import React from "react";
 import SettingScreen from "../screens/SettingScreen"
 import AddInforFood from "../screens/AddFood/AddInforFood";
     
+//screen AddFoods
 import AddToFood from '../screens/AddFood/AddToFood';
 import AddFoodStack from './AddFoodNavigator';
+
+//screen AddProducts
+import AddProduct from '../screens/AddProduct/AddProduct';
 
 const Stack = createStackNavigator();
 function SettingStack(){
@@ -20,6 +24,11 @@ function SettingStack(){
                     options={{headerShown: false}}
                     name="AddToFood"
                     component={AddFoodStack}
+                />
+                <Stack.Screen
+                    options={{headerShown:false}}
+                    name="AddProduct"
+                    component={AddProduct}
                 />
             </Stack.Navigator>
     )
