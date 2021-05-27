@@ -6,7 +6,7 @@ import {
   Dimensions,
   ScrollView,
   ProgressViewIOSComponent,
-  Image
+  Image,
 } from "react-native";
 import { Button, Container, Text } from "native-base";
 import ListFood from "../components/food/ListFood";
@@ -19,16 +19,19 @@ import Axios from "axios";
 const FoodScreen = ({ navigation }) => {
   const [foods, setFoods] = useState();
   const [focus, setFocus] = useState(false);
-  const [foodName, setFoodName] = useState();
+  const [foodName, setFoodName] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     console.log("connect to api food");
     Axios.get("https://food-order-app12.herokuapp.com/api/foods")
       .then((res) => {
         setFoods(res.data);
-        setLoading(false)
+        setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.log(err));
+    return function Clear() {
+      setFoods([]);
+    };
   }, []);
 
   function isFocus(focus) {
@@ -64,7 +67,7 @@ const FoodScreen = ({ navigation }) => {
           )}
         </Container>
       ) : (
-        //Loading 
+        //Loading
         <Container
           style={{
             alignItems: "center",
@@ -72,10 +75,10 @@ const FoodScreen = ({ navigation }) => {
           }}
         >
           <Image
-            source={require('../assets/loading.gif')}
+            source={require("../assets/loading.gif")}
             style={{
               width: 300,
-              height: 100
+              height: 100,
             }}
           />
         </Container>

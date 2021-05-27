@@ -11,7 +11,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import MethodCheckout from "./MeThodCheckout";
-import axios from 'axios';
+import axios from "axios";
 
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,25 +19,24 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 var { width, height } = Dimensions.get("window");
 
 const Checkout = (props) => {
+  const [userId, setUserId] = useState();
+  const [token, setToken] = useState();
 
-  const [userId,setUserId]=useState();
-  const [token,setToken]=useState();
+  const getUser = async () => {
+    try {
+      const userID = await AsyncStorage.getItem("userID");
+      const Token = await AsyncStorage.getItem("token");
 
-  const getUser = async () =>{
-    try{
-      const userID = await AsyncStorage.getItem("userID")
-      const Token = await AsyncStorage.getItem("token")
-
-      if (userID!=null && Token != null){
-        setUserId(userID)
-        setToken(Token)
+      if (userID != null && Token != null) {
+        setUserId(userID);
+        setToken(Token);
       }
-    } catch (e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
-  }
+  };
 
-  const config ={
+  const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -61,19 +60,25 @@ const Checkout = (props) => {
   }, []);
 
   const chechOut = () => {
-    axios.post("https://food-order-app12.herokuapp.com/api/orders",{
-      orderItems,
-      shippingAddrees: address,
-      user: userId
-    },config)
+    console.log({ orderItems, address, userId });
+    axios
+      .post(
+        "https://food-order-app12.herokuapp.com/api/orders",
+        {
+          orderItems,
+          shippingAddrees: address,
+          user: userId,
+        },
+        config
+      )
       .then((res) => {
-        if (res.status == 200 || res.status == 201 ){
+        if (res.status == 200 || res.status == 201) {
           props.navigation.navigate("Thankyou", { address: address });
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log("Loi");
+      });
   };
 
   return (
@@ -151,7 +156,6 @@ const mapStateToProps = (state) => {
     cartItems: cartItems,
   };
 };
-
 
 const styles = StyleSheet.create({
   addressContainer: {

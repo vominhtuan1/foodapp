@@ -7,7 +7,7 @@ const ListFoodByCategory = (props) => {
   const categoryId = props.route.params.categoryId;
   const getFoodByCategoryId = (foods, categoryId) => {
     return foods.filter((value) => {
-      return value.category == categoryId;
+      return value.category?.id == categoryId;
     });
   };
 

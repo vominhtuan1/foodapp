@@ -8,15 +8,15 @@ import {
   Image,
   Dimensions,
   Modal,
-  Alert
+  Alert,
 } from "react-native";
-import { Container } from 'native-base'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import axios from 'axios';
+import { Container } from "native-base";
+import Icon from "react-native-vector-icons/FontAwesome";
+import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
-var { width } = Dimensions.get("window")
+var { width } = Dimensions.get("window");
 
 const List = () => {
   const [foods, setFoods] = useState();
@@ -29,40 +29,41 @@ const List = () => {
     useCallback(() => {
       AsyncStorage.getItem("token")
         .then((res) => {
-          setToken(res)
+          setToken(res);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
 
       console.log("connect to api food");
-      axios.get("https://food-order-app12.herokuapp.com/api/foods")
+      axios
+        .get("https://food-order-app12.herokuapp.com/api/foods")
         .then((res) => {
           setFoods(res.data);
-          setLoading(false)
+          setLoading(false);
         })
         .catch((err) => console.error(err));
     }, [])
-  )
+  );
 
   const deleteProduct = () => {
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
     axios
       .delete(`https://food-order-app12.herokuapp.com/api/foods/${id}`, config)
       .then((res) => {
         const newFoods = foods.filter((item) => item.id !== id);
         setFoods(newFoods);
-        alert("Bạn đã xóa thành công !")
+        alert("Bạn đã xóa thành công !");
       })
       .catch((err) => {
-        console.log(err)
-        alert("Xóa thất bại.")
-      })
-      setVisible(false)
-  }
+        console.log(err);
+        alert("Xóa thất bại.");
+      });
+    setVisible(false);
+  };
 
   return (
     <>
@@ -73,20 +74,20 @@ const List = () => {
             transparent={true}
             visible={visible}
             onRequestClose={() => {
-              setVisible(false)
+              setVisible(false);
             }}
           >
             <View style={styles.modalStyle}>
               <View style={styles.modalView}>
                 <TouchableOpacity
                   onPress={() => {
-                    setVisible(false)
+                    setVisible(false);
                   }}
                   style={{
                     alignSelf: "flex-end",
-                    position: 'absolute',
+                    position: "absolute",
                     top: 5,
-                    right: 10
+                    right: 10,
                   }}
                 >
                   <Icon name="close" size={20} />
@@ -95,8 +96,11 @@ const List = () => {
                   onPress={() => {
                     Alert.alert("Lưu ý !!!", "Bạn có muốn xóa không?", [
                       { text: "Có", onPress: () => deleteProduct() },
-                      { text: "Không", onPress: () => console.log("alert close") }
-                    ])
+                      {
+                        text: "Không",
+                        onPress: () => console.log("alert close"),
+                      },
+                    ]);
                   }}
                 >
                   <View style={styles.buttonContainer}>
@@ -109,41 +113,48 @@ const List = () => {
           <ScrollView>
             {foods.map((item, index) => (
               <TouchableOpacity
-                onLongPress={() => [setVisible(true), setId(item.id)]}
+                onLongPress={() => {
+                  [setVisible(true), setId(item.id)];
+                }}
               >
                 <View key={item.id} style={styles.container}>
-
                   <View style={styles.header}>
-
-                    <Image
-                      source={{ uri: item.image }}
-                      style={styles.image}
-                    />
-                    <Text style={styles.bodyText} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
-                    <Text style={styles.bodyText} numberOfLines={1} ellipsizeMode="tail">{item.category}</Text>
+                    <Image source={{ uri: item.image }} style={styles.image} />
+                    <Text
+                      style={styles.bodyText}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={styles.bodyText}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.category?.name}
+                    </Text>
                     <Text style={styles.bodyText}>{item.price}</Text>
-
                   </View>
-
                 </View>
               </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
       ) : (
-        //Loading 
+        //Loading
         <Container
           style={{
             alignItems: "center",
             justifyContent: "center",
-            height: 340
+            height: 340,
           }}
         >
           <Image
-            source={require('../../assets/loading.gif')}
+            source={require("../../assets/loading.gif")}
             style={{
               width: 300,
-              height: 100
+              height: 100,
             }}
           />
         </Container>
@@ -158,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexWrap: "wrap",
     margin: 3,
-    width: width / 6
+    width: width / 6,
   },
   header: {
     flexDirection: "row",
@@ -190,39 +201,39 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 40,
     width: width / 6,
-    margin: 2
+    margin: 2,
   },
   buttonContainer: {
     borderRadius: 15,
     backgroundColor: "red",
-    justifyContent: 'center',
-    padding: 10
+    justifyContent: "center",
+    padding: 10,
   },
   textContainer: {
-    fontFamily: 'Comfortaa_Regular',
+    fontFamily: "Comfortaa_Regular",
     fontSize: 18,
-    color: 'white'
+    color: "white",
   },
   modalStyle: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       height: 2,
-      width: 0
+      width: 0,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
-  }
+    elevation: 5,
+  },
 });
 export default List;
