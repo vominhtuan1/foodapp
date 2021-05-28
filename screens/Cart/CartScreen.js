@@ -32,7 +32,7 @@ var { height, width } = Dimensions.get("window");
 const CartScreen = (props) => {
   var total = 0;
   props.cartItems.forEach((cart) => {
-    return (total += cart.product.price * cart.quantity);
+    return (total += cart.food.price * cart.quantity);
   });
 
   return (

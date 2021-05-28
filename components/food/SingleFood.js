@@ -132,8 +132,8 @@ const SingleFood = (props) => {
 
 const mapToDispatchToProps = (dispatch) => {
   return {
-    addItemToCart: (product, quantity) =>
-      dispatch(action.addToCart({ product, quantity })),
+    addItemToCart: (food, quantity) =>
+      dispatch(action.addToCart({ food, quantity })),
   };
 };
 
