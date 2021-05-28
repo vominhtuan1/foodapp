@@ -24,7 +24,7 @@ const Thankyou = (props) => {
   const confirm = props.route.params;
 
   return (
-    <SafeAreaView style={{ backgroundColor: "whit" }}>
+    <SafeAreaView style={{ backgroundColor: "white", flex : 1 }}>
       <View style={{ marginTop: 30, alignItems: "center" }}>
         <Text style={{ fontSize: 35, fontFamily: "Comfortaa_Bold" }}>
           Cảm ơn

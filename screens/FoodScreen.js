@@ -42,9 +42,9 @@ const FoodScreen = ({ navigation }) => {
   }
   function getFoodByName(name) {
     if (!name) return foods;
-    return foods.filter((x) => {
-      return x.name.toUpperCase().includes(name.toUpperCase());
-    });
+    return foods.filter((x) => 
+      x.name.toUpperCase().includes(name.toUpperCase())
+    )
   }
   console.log("render foodScreen");
   return (

@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 var { width } = Dimensions.get("window");
 
 const CartItem = (props) => {
-  const data = props.item.item.product;
+  const data = props.item.item.food;
   const [quantity, setQuantity] = useState(props.item.item.quantity);
 
   function editQuantity(action) {
@@ -132,8 +132,8 @@ const CartItem = (props) => {
 
 const mapToDispatchToProps = (dispatch) => {
   return {
-    updateQty: (product, plusOrMinus) =>
-      dispatch(action.updateQty({ product, plusOrMinus })),
+    updateQty: (food, plusOrMinus) =>
+      dispatch(action.updateQty({ food, plusOrMinus })),
   };
 };
 

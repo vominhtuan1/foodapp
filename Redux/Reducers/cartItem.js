@@ -14,16 +14,16 @@ const cartItems = (state = [], action) => {
         case CLEAR_CART:
             return state=[]
         case UPDATE_QTY:
-            let cartItem = state.find(item => item.product.id === action.payload.product.id)
+            let cartItem = state.find(item => item.food.id === action.payload.food.id)
             if (action.payload.plusOrMinus == "+"){
                 cartItem.quantity++
             }else {
                 cartItem.quantity--
             }
             
-            console.log(cartItem.product.id)
-            console.log(cartItem.product.name)
-            console.log(cartItem.product.price)
+            console.log(cartItem.food.id)
+            console.log(cartItem.food.name)
+            console.log(cartItem.food.price)
             console.log(cartItem.quantity)
             return [...state]
     }
