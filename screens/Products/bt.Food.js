@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
     },
     Btn: {
         width: 110,
-        borderRadius: 25,
+        borderRadius: 15,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 20,
         marginHorizontal:8,
-        backgroundColor: "#ebdb2d",
+        backgroundColor: "#f2ce55",
         flexDirection:'row',
     },
     iconBtn:{

@@ -18,13 +18,21 @@ const BT_search = (props) => {
 const styles = StyleSheet.create({
     inputView: {
         flexDirection: "row",
-        backgroundColor: "#FFC0CB",
-        borderRadius: 30,
-        width: "80%",
+        backgroundColor: "white",
+        borderRadius: 15,
+        width: "90%",
         height: 45,
         marginBottom: 20,
         alignItems: "center",
         justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 10,
+        elevation: 5,
       },
     iconView: {
         marginLeft:20,

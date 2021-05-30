@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View,StyleSheet, TextInput, ScrollView,TouchableOpacity } from "react-native";
+import { Text, View,StyleSheet, TextInput, ScrollView,TouchableOpacity,KeyboardAvoidingView } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import BT_Order from './Products/bt_Order'
 import BT_search from './Products/bt_Seach';
@@ -8,10 +8,11 @@ import BT_Foods from './Products/bt.Food';
 import List from "./Products/listFood";
 
 import { Ionicons } from '@expo/vector-icons';
+import { ScrollViewComponent } from "react-native";
 const SettingScreen = ({ navigation }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      
         <Text style={styles.textinput}>Product</Text>
         <View style={styles.header1}>
             <BT_Order/> 
@@ -21,12 +22,11 @@ const SettingScreen = ({ navigation }) => {
             </TouchableOpacity>
         </View> 
 
-        
-      </View>
-      <View style={styles.seach}>
-            <BT_search/>
+        <View style={styles.seach}>
+            <BT_search />
         </View>
-      <View style={styles.body}>
+      
+      
             <View style={styles.body1}>
               <Text style={styles.bodyText}> </Text>
               <Text style={styles.bodyText}>Name </Text>
@@ -37,9 +37,8 @@ const SettingScreen = ({ navigation }) => {
             <View style={styles.body2}>
                 <List/>
             </View>
-      </View>
+      
     </View>
-    
   );
 };
 const styles = StyleSheet.create({
@@ -48,23 +47,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center" 
   },
-  header: {
-    flex: 2,
-    justifyContent: "center",
-    alignItems: "center" 
-  },
-
-iconBtn:{
+  iconBtn:{
     marginLeft:1,
     flex: 1,
-},
-  body: {
-    flex: 6,
-    justifyContent: "center",
-    alignItems: "center" 
   },
   header1: {
-    flex:1,
     flexDirection:"row",
     justifyContent: "center",
     alignItems: "center" 
@@ -89,13 +76,11 @@ iconBtn:{
     alignItems: "center" 
   },
   seach: {
-    flex:2,
-    justifyContent: "center",
-    alignItems: "center" 
+    marginTop: 30,
+    marginBottom :10,
   },
   textinput: {
     marginTop: 30,
-    flex:1,
     justifyContent: "center",
     alignItems: "center" ,
     fontSize: 30,
