@@ -116,6 +116,7 @@ const List = () => {
                 onLongPress={() => {
                   [setVisible(true), setId(item.id)];
                 }}
+                activeOpacity={0.8}
               >
                 <View key={item.id} style={styles.container}>
                   <View style={styles.header}>
@@ -174,10 +175,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     backgroundColor: "white",
-
+    borderRadius: 8,
     width: "100%",
     height: 55,
-    marginBottom: 10,
+    marginBottom: 5,
     alignItems: "center",
     justifyContent: "space-between",
     shadowColor: "#000",

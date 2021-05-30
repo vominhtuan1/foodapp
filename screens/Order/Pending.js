@@ -57,7 +57,7 @@ const Pending = () => {
               renderItem={(item) => {
                 return (
                   <View style={styles.container}>
-                    <TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7}>
                       <View style={styles.header}>
                         <SimpleLineIcons
                           style={styles.Icon}
