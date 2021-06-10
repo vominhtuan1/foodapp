@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect,useCallback } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { Container } from 'native-base';
 import { SimpleLineIcons } from "@expo/vector-icons";
 import codeOrder from "../../data/codeOrder";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useFocusEffect} from '@react-navigation/native';
 
 import axios from "axios";
 
@@ -29,24 +30,25 @@ const Pending = () => {
     return { userID, token }
   }
 
-  useEffect(() => {
-    getUser().then((user) => {
-      const token = user.token
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      axios
-        .get("https://food-order-app12.herokuapp.com/api/orders", config)
-        .then((res) => {
-          setOrders(res.data),
-            setLoading(false)
-        })
-        .catch((err) => console.log(err))
-    })
-
-  }, [])
+  useFocusEffect((
+    useCallback(()=> {
+      getUser().then((user) => {
+        const token = user.token
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        axios
+          .get("https://food-order-app12.herokuapp.com/api/orders", config)
+          .then((res) => {
+            setOrders(res.data),
+              setLoading(false)
+          })
+          .catch((err) => console.log(err))
+      })
+    },[])
+  ))
   return (
     <>
       {loading == false ? (
