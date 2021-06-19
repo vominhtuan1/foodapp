@@ -19,7 +19,7 @@ import axios from "axios";
 
 var { width } = Dimensions.get("window")
 
-const Pending = () => {
+const Delivered = () => {
   const [orders, setOrders] = useState()
   const [loading, setLoading] = useState(true)
 
@@ -42,7 +42,7 @@ const Pending = () => {
         axios
           .get("https://food-order-app12.herokuapp.com/api/orders", config)
           .then((res) => {
-            const pending = res.data.filter((item) => item.status == "pending")
+            const pending = res.data.filter((item) => item.status == "delivered")
             setOrders(pending),
               setLoading(false)
           })
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
     elevation: 5,
   }
 });
-export default Pending;
+export default Delivered;

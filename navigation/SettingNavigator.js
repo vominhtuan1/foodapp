@@ -11,6 +11,9 @@ import AddFoodStack from './AddFoodNavigator';
 //screen AddProducts
 import AddProduct from '../screens/AddProduct/AddProduct';
 
+//screen EditOrders
+import EditOrderNavigator from './EditOrderNavigator';
+
 const Stack = createStackNavigator();
 function SettingStack(){
     return(
@@ -29,6 +32,11 @@ function SettingStack(){
                     options={{headerShown:false}}
                     name="AddProduct"
                     component={AddProduct}
+                />
+                <Stack.Screen
+                    options={{headerShown:false}}
+                    name="EditOrderNavigator"
+                    component={EditOrderNavigator}
                 />
             </Stack.Navigator>
     )
