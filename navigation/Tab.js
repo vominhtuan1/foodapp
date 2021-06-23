@@ -4,8 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome } from "@expo/vector-icons";
 
-//Screens
-import SettingScreen from "../screens/SettingScreen";
 
 
 import { Feather } from "@expo/vector-icons";

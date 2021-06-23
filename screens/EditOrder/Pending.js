@@ -11,7 +11,6 @@ const Pending = () => {
   const [orders, setOrders] = useState()
   const [loading, setLoading] = useState(true)
 
-
   const getUser = async () => {
     const userID = await AsyncStorage.getItem("userID")
     const token = await AsyncStorage.getItem("token")
