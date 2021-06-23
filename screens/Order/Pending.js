@@ -1,4 +1,4 @@
-import React, {useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
 import FoodCard from "../EditOrder/Foodcard";
+import NumberFormat from "react-number-format";
+
 
 import axios from "axios";
 
@@ -42,7 +44,7 @@ const Pending = () => {
         axios
           .get("https://food-order-app12.herokuapp.com/api/orders", config)
           .then((res) => {
-            const pending = res.data.filter((item) => item.status == "pending")
+            const pending = res.data.filter((item) => item.status == "pending" && item.user._id == user.userID)
             setOrders(pending),
               setLoading(false)
           })
@@ -61,17 +63,37 @@ const Pending = () => {
               renderItem={(item) => {
                 return (
                   <TouchableOpacity style={styles.container}>
-                    <View style={styles.header}>
-                      <SimpleLineIcons
-                        name="notebook"
-                        size={40}
-                        color="black"
-                      />
-                      <View >
-                        <Text style={styles.insize}>Mã ĐH: {item.item._id.substring(0, 10)}</Text>
-                        <Text style={styles.insize}>Thành tiền: {item.item.totalPrice}</Text>
+
+                    <View>
+                      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <Text style={styles.textContainer}>MĐH : </Text>
+                        <Text style={styles.textContainer}>{item.item._id}</Text>
+                      </View>
+                      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <Text style={styles.textContainer}>ĐC : </Text>
+                        <Text style={[styles.textContainer, { width: width * 0.65, textAlign: "right" }]}>{item.item.shippingAddrees}</Text>
+                      </View>
+                      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <Text style={styles.textContainer}>SĐT : </Text>
+                        <Text style={styles.textContainer}>{item.item.user.phone}</Text>
+                      </View>
+                      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <Text style={styles.textContainer}>Người nhận : </Text>
+                        <Text style={styles.textContainer}>{item.item.user.fullname}</Text>
+                      </View>
+                      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <Text style={styles.textContainer}>TT : </Text>
+                        <NumberFormat
+                          value={item.item.totalPrice}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          renderText={(value) => (
+                            <Text style={styles.textContainer}>{value} VNĐ</Text>
+                          )}
+                        />
                       </View>
                     </View>
+                    <View style={{height : 1.5, margin : 10, backgroundColor : '#ff6c00'}}/>
                     <FlatList
                       vertical
                       showsVerticalScrollIndicator={false}
@@ -111,12 +133,9 @@ const styles = StyleSheet.create({
   insize: {
     flexDirection: "column",
   },
-  header: {
-    flexDirection: "row",
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "space-around"
-
+  textContainer: {
+    fontFamily: 'Comfortaa_Regular',
+    fontSize: 14,
   },
   container: {
     backgroundColor: "#ffffff",
