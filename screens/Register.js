@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Alert, TouchableWithoutFeedback,Keyboard } from "react-native";
+import { View, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Formik } from "formik";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
@@ -27,7 +27,11 @@ import {
 } from "./../components/formStyles";
 
 const { brand, darkLight } = Colors;
+<<<<<<< HEAD
 const Register = ({navigation}) => {
+=======
+const Register = ({ navigation }) => {
+>>>>>>> 72b9f9e (fix register)
   const [hidePassword, setHidePassword] = useState(true);
   const handleRegister = ({
     username,
@@ -66,9 +70,7 @@ const Register = ({navigation}) => {
     }
   };
   return (
-    <TouchableWithoutFeedback
-      onPress={Keyboard.dismiss}
-    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <StyledContainer>
         <InnerContainer>
           <PageTitle> Food App</PageTitle>
