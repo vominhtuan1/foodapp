@@ -11,6 +11,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  Share,
 } from "react-native";
 import {
   Title,
@@ -24,7 +25,32 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+
+import file from "../../assets/fileBase64";
 const ProfileScreen = (prop) => {
+  const onShare = async () => {
+
+    try {
+      const result = await Share.share({
+        url : file.appLogo,
+        message: 'this is application.',
+       
+        
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+
+  };
   const getUser = async () => {
     const token = await AsyncStorage.getItem("token");
     const userID = await AsyncStorage.getItem("userID");
@@ -185,19 +211,13 @@ const ProfileScreen = (prop) => {
               </View>
 
               <View style={styles.menuWrapper}>
-                <TouchableRipple onPress={() => {}}>
-                  <View style={styles.menuItem}>
-                    <Icon name="credit-card" color="#FF6347" size={25} />
-                    <Text style={styles.menuItemText}>Thanh toán</Text>
-                  </View>
-                </TouchableRipple>
-                <TouchableRipple onPress={() => console.log("ok")}>
+                <TouchableRipple onPress={onShare}>
                   <View style={styles.menuItem}>
                     <Icon name="share-outline" color="#FF6347" size={25} />
                     <Text style={styles.menuItemText}>Chia sẻ ứng dụng</Text>
                   </View>
                 </TouchableRipple>
-                <TouchableRipple onPress={() => {}}>
+                <TouchableRipple onPress={() => {prop.navigation.navigate("ChangePass")}}>
                   <View style={styles.menuItem}>
                     <Icon
                       name="account-check-outline"
