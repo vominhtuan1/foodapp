@@ -19,7 +19,7 @@ import Axios from "axios";
 const FoodScreen = ({ navigation }) => {
   const [foods, setFoods] = useState();
   const [focus, setFocus] = useState(false);
-  const [foodName, setFoodName] = useState([]);
+  const [foodName, setFoodName] = useState();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     console.log("connect to api food");
@@ -43,7 +43,7 @@ const FoodScreen = ({ navigation }) => {
   function getFoodByName(name) {
     if (!name) return foods;
     return foods.filter((x) => 
-      x.name.toUpperCase().includes(name.toUpperCase())
+      x.name.toLowerCase().includes(name.toLowerCase())
     )
   }
   console.log("render foodScreen");
@@ -51,7 +51,7 @@ const FoodScreen = ({ navigation }) => {
     <>
       {loading == false ? (
         <Container>
-          <HeaderSearch isFocus={isFocus} foodName={getFoodName} />
+          <HeaderSearch isFocus={isFocus} foodName={getFoodName} navigation={navigation} />
 
           {focus ? (
             <SearchListFood

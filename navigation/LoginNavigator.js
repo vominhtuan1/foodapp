@@ -3,6 +3,7 @@ import React from "react";
 import Login from "../screens/Login";
 import MyTab from "../navigation/Tab";
 import Register from "../screens/Register";
+import ResetPassword from "../screens/resetPassword";
 import { NavigationContainer } from "@react-navigation/native";
 const Stack = createStackNavigator();
 function LoginStack() {
@@ -25,6 +26,11 @@ function LoginStack() {
           options={{ headerShown: false }}
           name="Home"
           component={MyTab}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ResetPassword"
+          component={ResetPassword}
         />
       </Stack.Navigator>
     </NavigationContainer>
