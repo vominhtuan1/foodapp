@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Container } from "native-base";
 import {
@@ -25,6 +25,9 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+import { useFocusEffect } from '@react-navigation/native';
+import NumberFormat from "react-number-format";
+
 
 import file from "../../assets/fileBase64";
 const ProfileScreen = (prop) => {
@@ -32,10 +35,10 @@ const ProfileScreen = (prop) => {
 
     try {
       const result = await Share.share({
-        url : file.appLogo,
+        url: file.appLogo,
         message: 'this is application.',
-       
-        
+
+
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -89,53 +92,67 @@ const ProfileScreen = (prop) => {
   const [address, setAddress] = useState();
   const [image, setImage] = useState();
   const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([])
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Xin lỗi chúng tôi không được phép truy cập vào thư viện");
+  useFocusEffect((
+    useCallback(() => {
+      (async () => {
+        if (Platform.OS !== "web") {
+          const { status } =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== "granted") {
+            alert("Xin lỗi chúng tôi không được phép truy cập vào thư viện");
+          }
         }
-      }
-    })();
-    getUser().then((user) => {
-      const token = user.token;
-      const userID = user.userID;
-      const apiUrl = `https://food-order-app12.herokuapp.com/api/users/${userID}`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      Axios.get(apiUrl, config)
-        .then((res) => {
-          setImage(res.data.image);
-          setUsername(res.data.username);
-          setEmail(res.data.email);
-          setAddress(res.data.address);
-          setPhone(res.data.phone);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-          Alert.alert(
-            "\n",
-            "Phiên đăng nhập của bạn đã hết hạn, vui lòng đăng nhập lại",
-            [
-              {
-                text: "OK",
-                onPress: () => {
-                  AsyncStorage.setItem("token", null);
-                  prop.navigation.navigate("Login");
+      })();
+      getUser().then((user) => {
+        const token = user.token;
+        const userID = user.userID;
+        const apiUrl = `https://food-order-app12.herokuapp.com/api/users/${userID}`;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        Axios.get(apiUrl, config)
+          .then((res) => {
+            setImage(res.data.image);
+            setUsername(res.data.username);
+            setEmail(res.data.email);
+            setAddress(res.data.address);
+            setPhone(res.data.phone);
+          })
+          .catch((err) => {
+            console.log(err.response.data);
+            Alert.alert(
+              "\n",
+              "Phiên đăng nhập của bạn đã hết hạn, vui lòng đăng nhập lại",
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    AsyncStorage.setItem("token", null);
+                    prop.navigation.navigate("Login");
+                  },
                 },
-              },
-            ]
-          );
-        });
-    });
-  }, []);
+              ]
+            );
+          });
+        Axios
+          .get("https://food-order-app12.herokuapp.com/api/orders", config)
+          .then((res) => {
+            const delivered = res.data.filter((item) => item.status == "delivered" && item.user._id == userID)
+            setOrders(delivered),
+              setLoading(false)
+          })
+          .catch((err) => console.log(err))
+      });
+    }, [])
+  ))
+  var total = 0
+  orders.forEach((item) => {
+    return (total += item.totalPrice)
+  })
 
   return (
     <>
@@ -201,11 +218,20 @@ const ProfileScreen = (prop) => {
                     },
                   ]}
                 >
-                  <Title>2.000.000</Title>
+                  <Title>
+                    <NumberFormat
+                      value={total}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      renderText={(value) => (
+                        <Text >{value}</Text>
+                      )}
+                    />
+                  </Title>
                   <Caption>VND</Caption>
                 </View>
                 <View style={styles.infoBox}>
-                  <Title>12</Title>
+                  <Title>{orders.length}</Title>
                   <Caption>Đơn hàng</Caption>
                 </View>
               </View>
@@ -217,7 +243,7 @@ const ProfileScreen = (prop) => {
                     <Text style={styles.menuItemText}>Chia sẻ ứng dụng</Text>
                   </View>
                 </TouchableRipple>
-                <TouchableRipple onPress={() => {prop.navigation.navigate("ChangePass")}}>
+                <TouchableRipple onPress={() => { prop.navigation.navigate("ChangePass") }}>
                   <View style={styles.menuItem}>
                     <Icon
                       name="account-check-outline"
@@ -267,6 +293,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
   },
   user_edit: {
     position: "absolute",

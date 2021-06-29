@@ -181,7 +181,7 @@ const EditProfileScreen = (prop) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView>
+      <ScrollView style={{flex : 1}}>
         <View style={styles.container}>
           <View style={styles.avatarInfo}>
             <TouchableOpacity onPress={updateImageBackground}>

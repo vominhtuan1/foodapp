@@ -1,11 +1,13 @@
-import React, { useState, useEffect,useRef } from "react";
-import { Text, View, StyleSheet, Dimensions, TouchableOpacity, FlatList } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, FlatList, ActionSheetIOS, Platform } from "react-native";
 import { Picker, Item } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NumberFormat from "react-number-format";
 import FoodCard from "./Foodcard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import Constants from 'expo-constants';
 
 
@@ -15,38 +17,19 @@ import * as Notifications from 'expo-notifications'
 import * as Permissions from 'expo-permissions';
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
 });
 
 const OrderCard = (props) => {
 
     const [expoPushToken, setExpoPushToken] = useState(props.order.item.user.exponentPushToken);
-    const [notification, setNotification] = useState(false);
-    const notificationListener = useRef();
-    const responseListener = useRef();
-
-    useEffect(() => {
-        registerForPushNotificationsAsync().then(token => console.log(token));
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(notification);
-          });
-      
-          responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            console.log(response);
-          });
-      
-          return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-          };
-    }, []);
 
 
-    const [state, setState] = useState()
+    const [state, setState] = useState(props.order.item.status)
     const [token, setToken] = useState()
 
     useEffect(() => {
@@ -58,7 +41,7 @@ const OrderCard = (props) => {
     }, []);
 
     const updateState = (id, status) => {
-        if (status == "shipping"){
+        if (status == "shipping") {
             sendPushNotification(expoPushToken)
         }
         const config = {
@@ -81,23 +64,23 @@ const OrderCard = (props) => {
     return (
         <View style={styles.container}>
             <View>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginBottom : 3 }}>
                     <Text style={styles.textContainer}>MĐH : </Text>
                     <Text style={styles.textContainer}>{props.order.item._id}</Text>
                 </View>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginBottom : 3  }}>
                     <Text style={styles.textContainer}>ĐC : </Text>
                     <Text style={[styles.textContainer, { width: width * 0.65, textAlign: "right" }]}>{props.order.item.shippingAddrees}</Text>
                 </View>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row',marginBottom : 3  }}>
                     <Text style={styles.textContainer}>SĐT : </Text>
                     <Text style={styles.textContainer}>{props.order.item.user.phone}</Text>
                 </View>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row',marginBottom : 3  }}>
                     <Text style={styles.textContainer}>Người nhận : </Text>
                     <Text style={styles.textContainer}>{props.order.item.user.fullname}</Text>
                 </View>
-                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row',marginBottom : 5 }}>
                     <Text style={styles.textContainer}>TT : </Text>
                     <NumberFormat
                         value={props.order.item.totalPrice}
@@ -108,24 +91,59 @@ const OrderCard = (props) => {
                         )}
                     />
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between',marginBottom : 5  }}>
                     <Text style={styles.textContainer}>Trạng thái : </Text>
-                    <Item picker style={{ top: -28 }}>
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<Icon name="arrow-down" color="#ff6c00" />}
-                            placeholder="Chọn trạng thái"
-                            selectedValue={props.order.item.status}
-                            placeholderStyle={{ fontFamily: 'Comfortaa_Regular' }}
-                            onValueChange={(e) => [setState(e)]}
-                            style={{ marginTop: 15, width: width * 0.4, height: 50 }}
-                            textStyle={{ fontFamily: 'Comfortaa_Regular' }}
+                    {Platform.OS === "ios" ? (
+                        <TouchableOpacity
+                            onPress={() => {
+                                ActionSheetIOS.showActionSheetWithOptions(
+                                    {
+                                        options: ["Cancel", "Pending", "Shipping", "Delivered"],
+                                        cancelButtonIndex: 0,
+                                        userInterfaceStyle: 'dark'
+                                    },
+                                    buttonIndex => {
+                                        if (buttonIndex === 0) {
+                                            // cancel action
+                                        } else if (buttonIndex === 1) {
+                                            setState('pending')
+                                        } else if (buttonIndex === 2) {
+                                            setState('shipping')
+                                        } else if (buttonIndex === 3) {
+                                            setState('delivered')
+                                        }
+                                    }
+                                )
+                            }}
+                            style={{flexDirection : 'row'}}
                         >
-                            <Picker.Item key={1} label={"Pending"} value={"pending"} />
-                            <Picker.Item key={2} label={"Shipping"} value={"shipping"} />
-                            <Picker.Item key={3} label={"Delivered"} value={"delivered"} />
-                        </Picker>
-                    </Item>
+                            <Text style={[styles.textContainer,{fontSize : 18}]}>{state}</Text>
+                            <MaterialCommunityIcons
+                                name="arrow-down"
+                                size={24}
+                                color="orange"
+                            />
+                        </TouchableOpacity>
+
+                    ) : (
+                        <Item picker style={{ top: -28 }}>
+                            <Picker
+                                mode="dropdown"
+                                iosIcon={<Icon name="arrow-down" color="#ff6c00" />}
+                                placeholder="Chọn trạng thái"
+                                selectedValue={state}
+                                placeholderStyle={{ fontFamily: 'Comfortaa_Regular' }}
+                                onValueChange={(e) => setState(e)}
+                                style={{ marginTop: 15, width: width * 0.4, height: 50 }}
+                                textStyle={{ fontFamily: 'Comfortaa_Regular' }}
+                            >
+                                <Picker.Item key={1} label={"Pending"} value={"pending"} />
+                                <Picker.Item key={2} label={"Shipping"} value={"shipping"} />
+                                <Picker.Item key={3} label={"Delivered"} value={"delivered"} />
+                            </Picker>
+                        </Item>
+
+                    )}
                 </View>
             </View>
             <FlatList
@@ -188,35 +206,5 @@ const sendPushNotification = async (expoPushToken) => {
     });
 }
 
-async function registerForPushNotificationsAsync() {
-    let token;
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      //console.log(token);
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-  
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-  
-    return token;
-}
 
 export default OrderCard;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert, TouchableWithoutFeedback,Keyboard } from "react-native";
+import { View, Alert, TouchableWithoutFeedback,Keyboard,Text } from "react-native";
 import { Formik } from "formik";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
@@ -129,9 +129,12 @@ const Login = ({ navigation }) => {
                   <ButtonText>Đăng Ký</ButtonText>
                 </StyledButton>
                 <Line />
-                <TextLink>
-                  <TextLinkContent>Quên mật khẩu ?</TextLinkContent>
-                </TextLink>
+                <Text 
+                  onPress={() => {navigation.navigate("ResetPassword")}}
+                  style={{color : "#ff6347", textAlign : 'center'}}
+                >
+                  Quên mật khẩu?
+                </Text>
               </StyledFormArea>
             )}
           </Formik>
