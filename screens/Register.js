@@ -27,11 +27,8 @@ import {
 } from "./../components/formStyles";
 
 const { brand, darkLight } = Colors;
-<<<<<<< HEAD
-const Register = ({navigation}) => {
-=======
+
 const Register = ({ navigation }) => {
->>>>>>> 72b9f9e (fix register)
   const [hidePassword, setHidePassword] = useState(true);
   const handleRegister = ({
     username,
@@ -124,7 +121,6 @@ const Register = ({ navigation }) => {
                   isPassword={true}
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
-                  
                 />
 
                 <MyTextInput
@@ -143,7 +139,11 @@ const Register = ({ navigation }) => {
                 <Line />
                 <ExtraView>
                   <ExtraText>Bạn đã có tài khoản ? </ExtraText>
-                  <TextLink onPress={()=>{navigation.navigate("Login")}} >
+                  <TextLink
+                    onPress={() => {
+                      navigation.navigate("Login");
+                    }}
+                  >
                     <TextLinkContent>Đăng nhập</TextLinkContent>
                   </TextLink>
                 </ExtraView>
@@ -172,7 +172,7 @@ const MyTextInput = ({
       <StyledInputLabel>{label}</StyledInputLabel>
       <StyledTextInput {...props} />
       {isPassword && (
-        <RightIcon >
+        <RightIcon>
           <Entypo
             name={hidePassword ? "eye-with-line" : "eye"}
             size={24}

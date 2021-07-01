@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert, TouchableWithoutFeedback,Keyboard,Text } from "react-native";
+import {
+  View,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Text,
+} from "react-native";
 import { Formik } from "formik";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
@@ -54,6 +60,7 @@ const Login = ({ navigation }) => {
     }
     AsyncStorage.setItem("username", username);
     AsyncStorage.setItem("password", password);
+
     axios
       .post("https://food-order-app12.herokuapp.com/api/users/login", {
         username,
@@ -63,6 +70,7 @@ const Login = ({ navigation }) => {
         console.log(res.data);
         AsyncStorage.setItem("userID", res.data.userID);
         AsyncStorage.setItem("token", res.data.token);
+
         navigation.navigate("Home");
       })
       .catch((error) => {
@@ -76,9 +84,7 @@ const Login = ({ navigation }) => {
       });
   };
   return (
-    <TouchableWithoutFeedback
-      onPress={Keyboard.dismiss}
-    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <StyledContainer>
         <InnerContainer>
           <PageLogo source={require("./../assets/logo1.png")} />
@@ -129,9 +135,11 @@ const Login = ({ navigation }) => {
                   <ButtonText>Đăng Ký</ButtonText>
                 </StyledButton>
                 <Line />
-                <Text 
-                  onPress={() => {navigation.navigate("ResetPassword")}}
-                  style={{color : "#ff6347", textAlign : 'center'}}
+                <Text
+                  onPress={() => {
+                    navigation.navigate("ResetPassword");
+                  }}
+                  style={{ color: "#ff6347", textAlign: "center" }}
                 >
                   Quên mật khẩu?
                 </Text>
