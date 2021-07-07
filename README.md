@@ -1,5 +1,5 @@
 # Food App - Phần mềm bán đồ ăn online
-
+# Dowload cho thiết bị android tại link https://l.facebook.com/l.php?u=https%3A%2F%2Fexpo.io%2Fartifacts%2F46821da6-1932-4274-8858-f36ebc33ff0a%3Ffbclid%3DIwAR0quh9C2Ouc2REDh_w0EKKHKebf11ks7ec4NLild-qEnz7FqZIRglM89qA&h=AT0vvK-dvwnV9FP1dvJUtDi-Xr426llv5eWkHpm4NX_uy6qeOSW3zC9utPifo29zSuqpZbMfpa7iE5pf31LNrPS2_XPc9Jzz04pgajCz07-WSylTXDh--sAx-MO0niLe8L-zfSPM3eSSefGkeMz22g
 ## Mục lục
 - [Chức năng](#chức-năng)
 - [Yêu cầu thiết bị](#yêu-cầu-thiết-bị)
