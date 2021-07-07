@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Constants from 'expo-constants';
 import {
   View,
   Text,
@@ -9,35 +10,68 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
+  Platform
 } from "react-native";
 import MethodCheckout from "./MeThodCheckout";
 import axios from 'axios';
 
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from 'expo-notifications'
 
 var { width, height } = Dimensions.get("window");
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
+
+
 const Checkout = (props) => {
 
-  const [userId,setUserId]=useState();
-  const [token,setToken]=useState();
+  const [expoPushToken, setExpoPushToken] = useState('ExponentPushToken[KqR-zJCQTihZ-jyp5v8UEI]');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
-  const getUser = async () =>{
-    try{
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => console.log(token));
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  const [userId, setUserId] = useState();
+  const [token, setToken] = useState();
+
+  const getUser = async () => {
+    try {
       const userID = await AsyncStorage.getItem("userID")
       const Token = await AsyncStorage.getItem("token")
 
-      if (userID!=null && Token != null){
+      if (userID != null && Token != null) {
         setUserId(userID)
         setToken(Token)
       }
-    } catch (e){
+    } catch (e) {
       console.log(e)
     }
   }
 
-  const config ={
+  const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -47,7 +81,6 @@ const Checkout = (props) => {
   const [totalPrice, setTotalPrice] = useState();
   const [orderItems, setOrderItems] = useState();
   const [address, setAddress] = useState();
-  const [phone, setPhone] = useState();
 
   useEffect(() => {
     setOrderItems(props.cartItems);
@@ -61,13 +94,14 @@ const Checkout = (props) => {
   }, []);
 
   const chechOut = () => {
-    axios.post("https://food-order-app12.herokuapp.com/api/orders",{
+    sendPushNotification(expoPushToken)
+    axios.post("https://food-order-app12.herokuapp.com/api/orders", {
       orderItems,
       shippingAddrees: address,
       user: userId
-    },config)
+    }, config)
       .then((res) => {
-        if (res.status == 200 || res.status == 201 ){
+        if (res.status == 200 || res.status == 201) {
           props.navigation.navigate("Thankyou", { address: address });
         }
       })
@@ -127,6 +161,7 @@ const Checkout = (props) => {
 
         <TouchableOpacity
           style={styles.confirmContainer}
+          // onPress={() => chechOut()}
           onPress={() => chechOut()}
         >
           <Text
@@ -248,4 +283,57 @@ const styles = StyleSheet.create({
     width: width,
   },
 });
+
+const sendPushNotification = async (expoPushToken) => {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: "Bạn có đơn hàng kìa! 📬",
+    body: 'Mau vô xem để chuẩn bị đơn hàng nào!',
+    data: { someData: 'goes here' },
+  };
+
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
+
 export default connect(mapStateToProps)(Checkout);
+

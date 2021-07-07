@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CartScreen from '../screens/Cart/CartScreen';
 import Checkout from '../screens/Cart/Checkout/Checkout';
 import Thankyou from '../screens/Cart/Checkout/Thankyou';
+import ProvincesScreen from '../screens/User/Address/ProvincesScreen';
 
 
 const Stack = createStackNavigator();

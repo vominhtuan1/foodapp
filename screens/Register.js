@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { View, Alert, TouchableWithoutFeedback,Keyboard } from "react-native";
+import { View, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Formik } from "formik";
 import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
@@ -27,7 +27,8 @@ import {
 } from "./../components/formStyles";
 
 const { brand, darkLight } = Colors;
-const Register = () => {
+
+const Register = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const handleRegister = ({
     username,
@@ -66,9 +67,7 @@ const Register = () => {
     }
   };
   return (
-    <TouchableWithoutFeedback
-      onPress={Keyboard.dismiss}
-    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <StyledContainer>
         <InnerContainer>
           <PageTitle> Food App</PageTitle>
@@ -140,7 +139,11 @@ const Register = () => {
                 <Line />
                 <ExtraView>
                   <ExtraText>Bạn đã có tài khoản ? </ExtraText>
-                  <TextLink>
+                  <TextLink
+                    onPress={() => {
+                      navigation.navigate("Login");
+                    }}
+                  >
                     <TextLinkContent>Đăng nhập</TextLinkContent>
                   </TextLink>
                 </ExtraView>
@@ -169,7 +172,7 @@ const MyTextInput = ({
       <StyledInputLabel>{label}</StyledInputLabel>
       <StyledTextInput {...props} />
       {isPassword && (
-        <RightIcon onPress={() => setHidePassword(!hidePassword)}>
+        <RightIcon>
           <Entypo
             name={hidePassword ? "eye-with-line" : "eye"}
             size={24}

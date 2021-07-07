@@ -3,6 +3,7 @@ import React from "react";
 import FoodScreen from "../screens/FoodScreen";
 import ListFoodByCategory from "../components/food/foodByCategory/ListFoodByCategory";
 import SingleFood from "../components/food/SingleFood";
+import CartNavigator from "./CartNavigator";
 
 const Stack = createStackNavigator();
 function HomeStack() {
@@ -21,6 +22,11 @@ function HomeStack() {
       <Stack.Screen
         name="FoodDetail"
         component={SingleFood}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CartNavigator"
+        component={CartNavigator}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

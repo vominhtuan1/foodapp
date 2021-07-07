@@ -57,7 +57,7 @@ const HeaderSearch = (props) => {
       <Right style={{ flex: 0.15 }}>
         <Icon
           name={selectedIconCart ? "cart" : "cart-outline"}
-          onPress={() => setSelectedIconCart(true)}
+          onPress={() => props.navigation.navigate("CartNavigator")}
         />
       </Right>
       <Right style={{ flex: 0.15 }}>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Constants from 'expo-constants';
 import {
   View,
   Text,
@@ -25,6 +26,11 @@ import Axios from "axios";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
+import * as Notifications from 'expo-notifications'
+import * as Permissions from 'expo-permissions';
+
+
+
 const EditProfileScreen = (prop) => {
   //Info Detail User
   const [token, setToken] = useState();
@@ -38,6 +44,7 @@ const EditProfileScreen = (prop) => {
   const [sex, setSex] = React.useState("male");
   const [address, setAddress] = useState();
   const [birthday, setBirthday] = useState();
+  const [exponentPushToken,setExponentPushToken] = useState();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
   const getUser = async () => {
@@ -46,6 +53,8 @@ const EditProfileScreen = (prop) => {
     return { token, userID };
   };
   useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExponentPushToken(token));
+
     getUser().then((user) => {
       setToken(user.token);
       setUserID(user.userID);
@@ -160,6 +169,7 @@ const EditProfileScreen = (prop) => {
       sex: sex,
       address: address,
       birthday: birthday,
+      exponentPushToken: exponentPushToken
     };
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -171,7 +181,7 @@ const EditProfileScreen = (prop) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView>
+      <ScrollView style={{flex : 1}}>
         <View style={styles.container}>
           <View style={styles.avatarInfo}>
             <TouchableOpacity onPress={updateImageBackground}>
@@ -379,4 +389,36 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
+
 export default EditProfileScreen;

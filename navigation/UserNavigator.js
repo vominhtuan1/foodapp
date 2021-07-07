@@ -6,6 +6,7 @@ import EditAddressScreen from "../screens/User/Address/EditAddressScreen";
 import ProvincesScreen from "../screens/User/Address/ProvincesScreen";
 import DistrictsScreen from "../screens/User/Address/DistrictsScreen";
 import WardsScreen from "../screens/User/Address/WardsScreen";
+import ChangePass from "../screens/ChangePass";
 const Stack = createStackNavigator();
 function UserStack() {
   return (
@@ -60,6 +61,11 @@ function UserStack() {
             backgroundColor: "#f5f0f0",
           },
         }}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ChangePass"
+        component={ChangePass}
       />
     </Stack.Navigator>
   );
